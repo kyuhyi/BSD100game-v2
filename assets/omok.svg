@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#8b5a2b"/>
+  <g stroke="#2b1a0d" stroke-width="3">
+    <path d="M120 60v240M170 60v240M220 60v240M270 60v240M320 60v240M370 60v240M420 60v240M470 60v240M520 60v240"/>
+    <path d="M120 60h400M120 110h400M120 160h400M120 210h400M120 260h400M120 300h400"/>
+  </g>
+  <circle cx="270" cy="160" r="18" fill="#111"/>
+  <circle cx="320" cy="160" r="18" fill="#fff"/>
+  <circle cx="370" cy="160" r="18" fill="#111"/>
+  <text x="320" y="335" text-anchor="middle" fill="#fff" font-size="40" font-family="sans-serif" font-weight="700">OMOK</text>
+</svg>

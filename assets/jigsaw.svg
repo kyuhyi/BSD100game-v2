@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3c2ea5"/><stop offset="1" stop-color="#1ac6ff"/></linearGradient></defs>
+  <rect width="640" height="360" fill="url(#g)"/>
+  <g transform="translate(185,70)">
+    <rect x="0" y="0" width="90" height="90" rx="8" fill="#ffd166"/>
+    <rect x="96" y="0" width="90" height="90" rx="8" fill="#ef476f"/>
+    <rect x="192" y="0" width="90" height="90" rx="8" fill="#06d6a0"/>
+    <rect x="0" y="96" width="90" height="90" rx="8" fill="#118ab2"/>
+    <rect x="96" y="96" width="90" height="90" rx="8" fill="#ffffff22" stroke="#fff" stroke-dasharray="6 6"/>
+    <rect x="192" y="96" width="90" height="90" rx="8" fill="#8338ec"/>
+    <rect x="0" y="192" width="90" height="90" rx="8" fill="#f78c6b"/>
+    <rect x="96" y="192" width="90" height="90" rx="8" fill="#caffbf"/>
+    <rect x="192" y="192" width="90" height="90" rx="8" fill="#ffadad"/>
+  </g>
+  <text x="320" y="338" text-anchor="middle" fill="#fff" font-size="36" font-family="sans-serif" font-weight="700">JIGSAW PUZZLE</text>
+</svg>

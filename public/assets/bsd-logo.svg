@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 170" role="img" aria-label="BSD 로고">
+  <g fill="#ffffff">
+    <ellipse cx="66" cy="84" rx="62" ry="72"/>
+    <path d="M66 42c3 15 8 20 23 23-15 3-20 8-23 23-3-15-8-20-23-23 15-3 20-8 23-23z" fill="#0f1120"/>
+  </g>
+  <g fill="#ffffff" font-family="Georgia, 'Times New Roman', serif">
+    <text x="142" y="114" font-size="122" font-style="italic" font-weight="700">BSD</text>
+  </g>
+  <g fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-style="italic" font-weight="700">
+    <text x="434" y="92" font-size="52">Business System</text>
+    <text x="434" y="142" font-size="52">Development</text>
+  </g>
+</svg>

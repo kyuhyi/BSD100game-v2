@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b1ecf"/><stop offset="1" stop-color="#ff8c2f"/></linearGradient></defs>
+  <rect width="640" height="360" fill="url(#g)"/>
+  <polygon points="240,190 180,150 240,110" fill="#fff"/>
+  <polygon points="320,110 360,170 400,110" fill="#fff"/>
+  <polygon points="400,250 460,210 400,170" fill="#fff"/>
+  <polygon points="320,250 280,190 240,250" fill="#fff"/>
+  <text x="320" y="322" fill="#fff" text-anchor="middle" font-size="42" font-weight="700" font-family="sans-serif">VECTOR VAULT</text>
+</svg>

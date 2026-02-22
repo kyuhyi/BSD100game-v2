@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#1b213c"/>
+  <g font-size="28" font-family="sans-serif" fill="#fff">
+    <text x="90" y="95">🍎 🍎 🍎 🍎 🍎</text>
+    <text x="110" y="135">🍎 🍎 🍎 🍎 🍎</text>
+    <text x="80" y="175">🍎 🍎 🍏 🍎 🍎</text>
+    <text x="105" y="215">🍎 🍎 🍎 🍎 🍎</text>
+    <text x="90" y="255">🍎 🍎 🍎 🍎 🍎</text>
+  </g>
+  <text x="510" y="130" fill="#9bf6ff" font-size="28" font-family="sans-serif" font-weight="700">숨은그림</text>
+  <text x="510" y="170" fill="#fff" font-size="24" font-family="sans-serif">찾기</text>
+</svg>

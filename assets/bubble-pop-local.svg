@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="버블 팝 썸네일">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1f4d"/>
+      <stop offset="100%" stop-color="#2c0f53"/>
+    </linearGradient>
+    <radialGradient id="b1" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#8ff7ff"/>
+      <stop offset="100%" stop-color="#2ed8ff"/>
+    </radialGradient>
+    <radialGradient id="b2" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ff98ef"/>
+      <stop offset="100%" stop-color="#ff49c8"/>
+    </radialGradient>
+    <radialGradient id="b3" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#dcff8b"/>
+      <stop offset="100%" stop-color="#9efc44"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="100" cy="74" r="40" fill="#ffffff14"/>
+  <circle cx="578" cy="300" r="58" fill="#ffffff0f"/>
+
+  <circle cx="178" cy="190" r="64" fill="url(#b1)"/>
+  <circle cx="320" cy="152" r="66" fill="url(#b2)"/>
+  <circle cx="454" cy="206" r="62" fill="url(#b3)"/>
+
+  <circle cx="160" cy="166" r="10" fill="#ffffff99"/>
+  <circle cx="302" cy="130" r="10" fill="#ffffff99"/>
+  <circle cx="437" cy="183" r="10" fill="#ffffff99"/>
+
+  <text x="320" y="305" fill="#ffffff" text-anchor="middle" font-size="48" font-weight="700" font-family="sans-serif">BUBBLE POP</text>
+</svg>

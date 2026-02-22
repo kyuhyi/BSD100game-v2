@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>바퍼 재믹스 | 깜찍 게임 포털</title>
+  <meta name="description" content="귀엽고 깜찍한 분위기의 미니게임 포털. 썸네일로 보고 바로 플레이해요!">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico?v=3">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="styles.css?v=11">
+</head>
+<body>
+  <div class="bg-bubble bubble-a"></div>
+  <div class="bg-bubble bubble-b"></div>
+  <div class="bg-bubble bubble-c"></div>
+
+  <a class="top-brand" href="index.html" aria-label="홈으로 이동">
+    <img class="top-brand-logo" src="assets/bsd-white.png?v=2" alt="BSD Business System Development">
+  </a>
+
+  <header class="hero">
+    <p class="tag">Cute Mini Games</p>
+    <h1>바퍼 재믹스</h1>
+    <p class="subtitle">귀엽고 깔끔한 썸네일로 골라서 바로 플레이해요.</p>
+    <section class="hero-morph" id="heroMorph">
+      <div class="hero-copy">
+        <h2>랜덤 게임 쇼케이스</h2>
+        <p>스크롤하면서 랜덤 썸네일을 탐험해보세요.</p>
+      </div>
+      <div class="hero-cards" id="heroCards"></div>
+    </section>
+    <div class="toolbar">
+      <input id="searchInput" type="text" placeholder="게임 이름 검색...">
+      <div id="categoryChips" class="chips"></div>
+    </div>
+  </header>
+
+  <main>
+    <section id="gamesGrid" class="games-grid"></section>
+  </main>
+
+  <footer>
+    <img class="footer-logo" src="assets/bsd-white.png?v=2" alt="BSD Business System Development">
+    <p>2026 copyright@BSD_funneldding</p>
+  </footer>
+
+  <script src="games-registry.js?v=11"></script>
+  <script src="app.js?v=11"></script>
+</body>
+</html>

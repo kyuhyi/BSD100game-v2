@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#1a1a1a"/>
+  <g transform="translate(170,40)">
+    <rect x="0" y="0" width="300" height="300" fill="#2f2f2f"/>
+    <g fill="#cfcfcf">
+      <rect x="0" y="0" width="75" height="75"/>
+      <rect x="150" y="0" width="75" height="75"/>
+      <rect x="75" y="75" width="75" height="75"/>
+      <rect x="225" y="75" width="75" height="75"/>
+      <rect x="0" y="150" width="75" height="75"/>
+      <rect x="150" y="150" width="75" height="75"/>
+      <rect x="75" y="225" width="75" height="75"/>
+      <rect x="225" y="225" width="75" height="75"/>
+    </g>
+    <text x="112" y="185" font-size="54" fill="#121212">♞</text>
+    <text x="188" y="112" font-size="54" fill="#121212">♚</text>
+  </g>
+  <text x="90" y="328" fill="#fff" font-size="34" font-family="sans-serif" font-weight="700">CHESS</text>
+</svg>

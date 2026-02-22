@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>바퍼 재믹스 | 게임 플레이</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico?v=3">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="styles.css?v=10">
+</head>
+<body>
+  <div class="bg-bubble bubble-a"></div>
+  <div class="bg-bubble bubble-b"></div>
+  <div class="bg-bubble bubble-c"></div>
+
+  <a class="top-brand" href="index.html" aria-label="홈으로 이동">
+    <img class="top-brand-logo" src="assets/bsd-white.png?v=2" alt="BSD Business System Development">
+  </a>
+
+  <header class="hero">
+    <p class="tag">Play Room</p>
+    <h1>바퍼 재믹스</h1>
+    <p class="subtitle" id="subtitle">게임을 불러오는 중...</p>
+  </header>
+
+  <main class="play-shell">
+    <div class="play-top">
+      <a class="link-btn" href="index.html">← 목록으로</a>
+      <h2 id="gameTitle">게임 로딩 중...</h2>
+      <a class="link-btn" id="originLink" href="#" target="_blank" rel="noopener noreferrer">원본 열기</a>
+    </div>
+    <div class="frame-wrap">
+      <iframe id="gameFrame" sandbox="allow-scripts allow-same-origin allow-popups" allowfullscreen></iframe>
+    </div>
+  </main>
+
+  <footer>
+    <img class="footer-logo" src="assets/bsd-white.png?v=2" alt="BSD Business System Development">
+    <p>2026 copyright@BSD_funneldding</p>
+  </footer>
+
+  <script src="games-registry.js?v=10"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const gameId = params.get("game");
+    const games = Array.isArray(window.GAME_REGISTRY) ? window.GAME_REGISTRY : [];
+    const game = games.find((g) => g.id === gameId);
+
+    const frame = document.getElementById("gameFrame");
+    const titleEl = document.getElementById("gameTitle");
+    const subtitle = document.getElementById("subtitle");
+    const originLink = document.getElementById("originLink");
+
+    if (!gameId || !game) {
+      titleEl.textContent = "게임을 찾을 수 없어요";
+      subtitle.textContent = "목록으로 돌아가 다른 게임을 선택해주세요.";
+      originLink.style.display = "none";
+    } else {
+      const gameUrl = `https://ggems.web.app/games/${encodeURIComponent(game.id)}/index.html`;
+      const origin = `https://ggems.web.app/play.html?game=${encodeURIComponent(game.id)}`;
+      titleEl.textContent = game.title;
+      subtitle.textContent = game.description || "게임을 플레이해보세요.";
+      frame.src = gameUrl;
+      originLink.href = origin;
+      document.title = `바퍼 재믹스 | ${game.title}`;
+    }
+  </script>
+</body>
+</html>
