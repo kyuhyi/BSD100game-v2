@@ -8,6 +8,30 @@ const CrystalPuzzleGame = dynamic(() => import("@/components/games/crystal-puzzl
   ssr: false,
   loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
 });
+const NeonStackGame = dynamic(() => import("@/components/games/neon-stack"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
+});
+const CrystalMemoryGame = dynamic(() => import("@/components/games/crystal-memory"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
+});
+const HelixJumpGame = dynamic(() => import("@/components/games/helix-jump"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
+});
+const CubeRunnerGame = dynamic(() => import("@/components/games/cube-runner"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
+});
+const GemCatcherGame = dynamic(() => import("@/components/games/gem-catcher"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
+});
+const Breakout3DGame = dynamic(() => import("@/components/games/breakout-3d"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
+});
 
 function hash(str: string) {
   let h = 0;
@@ -665,6 +689,12 @@ function EngineView({ mode, seed }: { mode: GameMode; seed: number }) {
   if (mode === "runner3d") return <Runner3DGame seed={seed} />;
   if (mode === "rhythm") return <RhythmGame seed={seed} />;
   if (mode === "crystal-puzzle") return <CrystalPuzzleGame />;
+  if (mode === "neon-stack") return <NeonStackGame />;
+  if (mode === "crystal-memory") return <CrystalMemoryGame />;
+  if (mode === "helix-jump") return <HelixJumpGame />;
+  if (mode === "cube-runner") return <CubeRunnerGame />;
+  if (mode === "gem-catcher") return <GemCatcherGame />;
+  if (mode === "breakout-3d") return <Breakout3DGame />;
   return <div>준비중</div>;
 }
 

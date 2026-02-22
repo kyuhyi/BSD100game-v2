@@ -99,5 +99,11 @@ window.GAME_REGISTRY = [
   {"id":"tempo-tapper","title":"템포 탭퍼","description":"비트 타이밍에 맞춰 탭해 콤보를 이어가는 리듬 캐주얼 게임!","category":"casual","thumbnail":"https://ggems.web.app/assets/tempo-tapper.svg","new":true},
   {"id":"vector-vault","title":"벡터 볼트","description":"화살표 방향과 같은 입력을 빠르게 스와이프/키 입력하는 순발력 게임!","category":"casual","thumbnail":"https://ggems.web.app/assets/vector-vault.svg","new":true},
   {"id":"pixel-painter","title":"픽셀 페인터","description":"목표 픽셀을 제한 시간 안에 빠르게 칠해 점수를 쌓는 탭 퍼즐 게임!","category":"casual","thumbnail":"https://ggems.web.app/assets/pixel-painter.svg","new":true},
-  {"id":"crystal-puzzle","title":"크리스탈 퍼즐","description":"크리스탈 블록을 밀어 순서대로 맞추는 고급 3D 슬라이딩 퍼즐!","category":"puzzle","thumbnail":"https://ggems.web.app/assets/crystal-puzzle.svg","new":true}
+  {"id":"crystal-puzzle","title":"크리스탈 퍼즐","description":"크리스탈 블록을 밀어 순서대로 맞추는 고급 3D 슬라이딩 퍼즐!","category":"puzzle","thumbnail":"https://ggems.web.app/assets/crystal-puzzle.svg","new":true},
+  {"id":"neon-stack","title":"네온 스택","description":"정확한 타이밍에 블록을 쌓는 3D 스태킹 게임","category":"arcade","thumbnail":"/assets/neon-stack.svg","new":true},
+  {"id":"crystal-memory","title":"크리스탈 메모리","description":"3D 카드를 뒤집어 같은 짝을 찾는 메모리 게임","category":"puzzle","thumbnail":"/assets/crystal-memory.svg","new":true},
+  {"id":"helix-jump","title":"헬릭스 점프","description":"나선 플랫폼의 틈새로 공을 떨어뜨리는 3D 게임","category":"arcade","thumbnail":"/assets/helix-jump.svg","new":true},
+  {"id":"cube-runner","title":"큐브 러너","description":"3D 트랙 위 큐브로 장애물을 피하는 러닝 게임","category":"action","thumbnail":"/assets/cube-runner.svg","new":true},
+  {"id":"gem-catcher","title":"젬 캐처","description":"하늘에서 떨어지는 3D 보석을 바구니로 받는 게임","category":"casual","thumbnail":"/assets/gem-catcher.svg","new":true},
+  {"id":"breakout-3d","title":"3D 벽돌깨기","description":"클래식 벽돌깨기를 3D로 즐기는 아케이드 게임","category":"arcade","thumbnail":"/assets/breakout-3d.svg","new":true}
 ];
