@@ -96,6 +96,10 @@ const ParkourGame = dynamic(() => import("@/components/games/parkour"), {
   ssr: false,
   loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
 });
+const TargetShooterGame = dynamic(() => import("@/components/games/target-shooter"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
 const IframeGame = dynamic(() => import("@/components/games/iframe-game"), {
   ssr: false,
   loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
@@ -781,6 +785,7 @@ function EngineView({ game, seed }: { game: GameMeta; seed: number }) {
   if (mode === "tnt-run") return <TntRunGame />;
   if (mode === "spleef") return <SpleefGame />;
   if (mode === "parkour") return <ParkourGame />;
+  if (mode === "target-shooter") return <TargetShooterGame />;
   return <div>준비중</div>;
 }
 

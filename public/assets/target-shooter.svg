@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:#1e3a5f"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </radialGradient>
+    <radialGradient id="target" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#22d3ee"/>
+      <stop offset="100%" style="stop-color:#0891b2"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="url(#bg)"/>
+  
+  <!-- Grid lines for depth -->
+  <g stroke="rgba(100,200,255,0.15)" stroke-width="1">
+    <line x1="0" y1="50" x2="200" y2="50"/>
+    <line x1="0" y1="100" x2="200" y2="100"/>
+    <line x1="0" y1="150" x2="200" y2="150"/>
+    <line x1="50" y1="0" x2="50" y2="200"/>
+    <line x1="100" y1="0" x2="100" y2="200"/>
+    <line x1="150" y1="0" x2="150" y2="200"/>
+  </g>
+  
+  <!-- Main target -->
+  <circle cx="100" cy="100" r="45" fill="url(#target)" opacity="0.9"/>
+  <circle cx="100" cy="100" r="30" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.7"/>
+  <circle cx="100" cy="100" r="15" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.7"/>
+  <circle cx="100" cy="100" r="5" fill="#ffffff"/>
+  
+  <!-- Small targets (different depths) -->
+  <circle cx="45" cy="55" r="18" fill="#22d3ee" opacity="0.5"/>
+  <circle cx="45" cy="55" r="10" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.4"/>
+  
+  <circle cx="160" cy="140" r="22" fill="#22d3ee" opacity="0.7"/>
+  <circle cx="160" cy="140" r="14" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Bonus star -->
+  <polygon points="155,50 158,58 167,58 160,63 163,72 155,67 147,72 150,63 143,58 152,58" fill="#fbbf24" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="1s" repeatCount="indefinite"/>
+  </polygon>
+  
+  <!-- Danger target -->
+  <circle cx="50" cy="145" r="20" fill="#ef4444" opacity="0.6"/>
+  <g stroke="#ffffff" stroke-width="2" opacity="0.5">
+    <line x1="40" y1="135" x2="60" y2="155"/>
+    <line x1="60" y1="135" x2="40" y2="155"/>
+  </g>
+  
+  <!-- Crosshair -->
+  <g stroke="#ffffff" stroke-width="2">
+    <line x1="80" y1="100" x2="92" y2="100"/>
+    <line x1="108" y1="100" x2="120" y2="100"/>
+    <line x1="100" y1="80" x2="100" y2="92"/>
+    <line x1="100" y1="108" x2="100" y2="120"/>
+  </g>
+  <circle cx="100" cy="100" r="25" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Title -->
+  <text x="100" y="188" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="18" font-weight="bold" fill="#22d3ee">TARGET SHOOTER</text>
+</svg>

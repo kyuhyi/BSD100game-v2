@@ -32,6 +32,7 @@ export type GameMode =
   | "tnt-run"
   | "spleef"
   | "parkour"
+  | "target-shooter"
   | "iframe";
 
 export type GameMeta = {
@@ -70,6 +71,7 @@ export const GAMES: GameMeta[] = [
   { id: "tnt-run", title: "TNT 런", thumbnail: "/assets/tnt-run.svg", description: "밟은 바닥이 사라져요! 최대한 오래 버티세요!", mode: "tnt-run" },
   { id: "spleef", title: "스플리프", thumbnail: "/assets/spleef.svg", description: "클릭으로 블록을 파괴하고 AI를 떨어뜨려라!", mode: "spleef" },
   { id: "parkour", title: "파쿠르", thumbnail: "/assets/parkour.svg", description: "플랫폼을 점프해서 건너라! 더블점프 가능!", mode: "parkour" },
+  { id: "target-shooter", title: "타겟 슈팅", thumbnail: "/assets/target-shooter.svg", description: "움직이는 타겟을 조준해서 맞추는 슈팅 게임!", mode: "target-shooter" },
   // 새로 추가된 게임들 (iframe)
   { id: "flappy-bird", title: "플래피 버드", thumbnail: "/assets/flappy-bird.svg", description: "클릭으로 새를 조종해 파이프를 통과하세요!", mode: "iframe", url: "https://bird-game-two.vercel.app" },
   { id: "rocket-jump", title: "로켓 점프", thumbnail: "/assets/rocket-jump.svg", description: "운석을 피하며 우주를 날아가세요!", mode: "iframe", url: "https://rocket-game-nine.vercel.app" },
