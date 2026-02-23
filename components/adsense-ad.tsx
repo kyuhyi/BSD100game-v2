@@ -38,21 +38,6 @@ export default function AdsenseAd() {
           </a>
         </div>
 
-        {/* Stats */}
-        <div className="mt-6 flex justify-center gap-8 border-t border-white/5 pt-4 md:justify-start">
-          <div className="text-center">
-            <p className="text-xl font-bold text-cyan-400">500+</p>
-            <p className="text-[10px] text-white/40">수강생</p>
-          </div>
-          <div className="text-center">
-            <p className="text-xl font-bold text-purple-400">4.9</p>
-            <p className="text-[10px] text-white/40">만족도</p>
-          </div>
-          <div className="text-center">
-            <p className="text-xl font-bold text-pink-400">89%</p>
-            <p className="text-[10px] text-white/40">완주율</p>
-          </div>
-        </div>
       </div>
     </div>
   );

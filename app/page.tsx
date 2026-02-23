@@ -4,7 +4,6 @@ import AdsenseAd from "@/components/adsense-ad";
 import { TopAd, MiddleAd, BottomAd } from "@/components/google-ad";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
-import StatsCounter from "@/components/stats-counter";
 
 export default function Page() {
   return (
@@ -12,9 +11,6 @@ export default function Page() {
       <SiteHeader />
       
       <Demo />
-      
-      {/* 상단 통계 카운터 */}
-      <StatsCounter />
       
       {/* 홍보 배너 */}
       <section className="mx-auto w-full max-w-5xl px-6 py-6">
@@ -28,9 +24,6 @@ export default function Page() {
       
       {/* 하단 광고 */}
       <BottomAd />
-      
-      {/* 하단 통계 카운터 */}
-      <StatsCounter />
       
       <SiteFooter />
     </main>
