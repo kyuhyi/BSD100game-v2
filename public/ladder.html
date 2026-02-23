@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사다리 게임</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #1a1a2e;
+    color: #eee;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #e94560, #0f3460);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .control-group label {
+    font-size: 0.85rem;
+    color: #aaa;
+  }
+  .control-group input {
+    width: 120px;
+    padding: 8px 12px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background: #16213e;
+    color: #eee;
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .control-group input:focus { border-color: #e94560; }
+  button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #e94560, #c23152);
+    color: #fff;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(233,69,96,0.4); }
+  .btn-secondary {
+    background: linear-gradient(135deg, #0f3460, #16213e);
+    color: #fff;
+    border: 2px solid #0f3460;
+  }
+  .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(15,52,96,0.4); }
+  .btn-reveal {
+    background: linear-gradient(135deg, #e9b000, #e94560);
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 12px 32px;
+  }
+  .btn-reveal:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(233,176,0,0.4); }
+
+  .names-section {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .names-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+  .names-group h3 {
+    font-size: 0.95rem;
+    color: #e94560;
+    margin-bottom: 4px;
+  }
+  .names-group input {
+    width: 130px;
+    padding: 6px 10px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background: #16213e;
+    color: #eee;
+    font-size: 0.9rem;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .names-group input:focus { border-color: #e94560; }
+
+  .game-area {
+    position: relative;
+    margin: 10px 0;
+  }
+  canvas {
+    border-radius: 12px;
+    background: #16213e;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .top-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 8px;
+  }
+  .player-btn {
+    padding: 10px 20px;
+    min-width: 80px;
+    border: 2px solid #0f3460;
+    border-radius: 10px;
+    background: #16213e;
+    color: #eee;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .player-btn:hover {
+    background: #0f3460;
+    transform: translateY(-2px);
+  }
+  .player-btn.active {
+    background: #e94560;
+    border-color: #e94560;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(233,69,96,0.5);
+  }
+  .bottom-labels {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 8px;
+  }
+  .result-label {
+    padding: 10px 20px;
+    min-width: 80px;
+    border-radius: 10px;
+    background: #0f3460;
+    color: #eee;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s;
+    opacity: 0.6;
+  }
+  .result-label.revealed {
+    opacity: 1;
+    background: linear-gradient(135deg, #e9b000, #e94560);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(233,176,0,0.4);
+    transform: scale(1.05);
+  }
+  .hidden { display: none; }
+  .instructions {
+    color: #888;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>🪜 사다리 게임</h1>
+
+<div id="setup">
+  <div class="controls">
+    <div class="control-group">
+      <label>참가자 수</label>
+      <input type="number" id="playerCount" value="4" min="2" max="8">
+    </div>
+    <button class="btn-primary" onclick="setupNames()">설정하기</button>
+  </div>
+
+  <div id="namesSection" class="names-section hidden"></div>
+  <div id="startBtnWrap" class="controls hidden">
+    <button class="btn-primary" onclick="startGame()">게임 시작!</button>
+  </div>
+</div>
+
+<div id="gameSection" class="hidden">
+  <div class="controls">
+    <button class="btn-secondary" onclick="resetGame()">다시 설정</button>
+    <button class="btn-reveal" onclick="revealAll()">전체 공개!</button>
+  </div>
+  <div class="top-buttons" id="topButtons"></div>
+  <div class="game-area">
+    <canvas id="ladderCanvas"></canvas>
+  </div>
+  <div class="bottom-labels" id="bottomLabels"></div>
+  <p class="instructions">위의 이름 버튼을 클릭하면 사다리를 타고 내려갑니다!</p>
+</div>
+
+<script>
+const COLORS = ['#e94560','#00d2ff','#44bd32','#e9b000','#9b59b6','#e67e22','#1abc9c','#fd79a8'];
+
+let playerNames = [];
+let resultNames = [];
+let ladderLines = [];
+let cols = 4;
+let canvasW, canvasH;
+let colSpacing;
+const PADDING_X = 60;
+const PADDING_TOP = 30;
+const PADDING_BOTTOM = 30;
+const ROW_GAP = 40;
+let rows;
+let animating = false;
+let revealedResults = new Set();
+
+function setupNames() {
+  cols = parseInt(document.getElementById('playerCount').value);
+  if (cols < 2) cols = 2;
+  if (cols > 8) cols = 8;
+  document.getElementById('playerCount').value = cols;
+
+  const section = document.getElementById('namesSection');
+  section.classList.remove('hidden');
+  document.getElementById('startBtnWrap').classList.remove('hidden');
+
+  let html = '<div class="names-group"><h3>참가자 이름</h3>';
+  for (let i = 0; i < cols; i++) {
+    html += `<input type="text" id="pname${i}" placeholder="참가자 ${i+1}" value="참가자 ${i+1}">`;
+  }
+  html += '</div><div class="names-group"><h3>결과</h3>';
+  for (let i = 0; i < cols; i++) {
+    html += `<input type="text" id="rname${i}" placeholder="결과 ${i+1}" value="결과 ${i+1}">`;
+  }
+  html += '</div>';
+  section.innerHTML = html;
+}
+
+function startGame() {
+  playerNames = [];
+  resultNames = [];
+  for (let i = 0; i < cols; i++) {
+    playerNames.push(document.getElementById(`pname${i}`).value || `참가자 ${i+1}`);
+    resultNames.push(document.getElementById(`rname${i}`).value || `결과 ${i+1}`);
+  }
+
+  document.getElementById('setup').classList.add('hidden');
+  document.getElementById('gameSection').classList.remove('hidden');
+
+  generateLadder();
+  drawLadder();
+  buildUI();
+}
+
+function resetGame() {
+  document.getElementById('setup').classList.remove('hidden');
+  document.getElementById('gameSection').classList.add('hidden');
+  revealedResults = new Set();
+  animating = false;
+}
+
+function generateLadder() {
+  rows = 8 + Math.floor(Math.random() * 5);
+  canvasW = Math.max(400, cols * 100 + PADDING_X * 2);
+  canvasH = rows * ROW_GAP + PADDING_TOP + PADDING_BOTTOM;
+  colSpacing = (canvasW - PADDING_X * 2) / (cols - 1);
+
+  ladderLines = [];
+  for (let r = 0; r < rows; r++) {
+    const rowLines = [];
+    for (let c = 0; c < cols - 1; c++) {
+      // Ensure no two adjacent horizontal lines in the same row
+      const prev = c > 0 ? rowLines[c - 1] : false;
+      if (prev) {
+        rowLines.push(false);
+      } else {
+        rowLines.push(Math.random() < 0.4);
+      }
+    }
+    ladderLines.push(rowLines);
+  }
+
+  // Ensure each column gap has at least one line
+  for (let c = 0; c < cols - 1; c++) {
+    const hasLine = ladderLines.some(row => row[c]);
+    if (!hasLine) {
+      const r = Math.floor(Math.random() * rows);
+      ladderLines[r][c] = true;
+    }
+  }
+}
+
+function getX(col) { return PADDING_X + col * colSpacing; }
+function getY(row) { return PADDING_TOP + row * ROW_GAP; }
+
+function drawLadder(highlightPath, highlightColor) {
+  const canvas = document.getElementById('ladderCanvas');
+  canvas.width = canvasW;
+  canvas.height = canvasH;
+  const ctx = canvas.getContext('2d');
+
+  ctx.clearRect(0, 0, canvasW, canvasH);
+
+  // Draw vertical lines
+  ctx.strokeStyle = '#334466';
+  ctx.lineWidth = 3;
+  for (let c = 0; c < cols; c++) {
+    const x = getX(c);
+    ctx.beginPath();
+    ctx.moveTo(x, PADDING_TOP);
+    ctx.lineTo(x, PADDING_TOP + (rows - 1) * ROW_GAP);
+    ctx.stroke();
+  }
+
+  // Draw horizontal lines
+  ctx.strokeStyle = '#556688';
+  ctx.lineWidth = 3;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols - 1; c++) {
+      if (ladderLines[r][c]) {
+        const x1 = getX(c);
+        const x2 = getX(c + 1);
+        const y = getY(r);
+        ctx.beginPath();
+        ctx.moveTo(x1, y);
+        ctx.lineTo(x2, y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Draw highlight path
+  if (highlightPath && highlightPath.length > 1) {
+    ctx.strokeStyle = highlightColor || '#e94560';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.shadowColor = highlightColor || '#e94560';
+    ctx.shadowBlur = 10;
+    ctx.beginPath();
+    ctx.moveTo(highlightPath[0].x, highlightPath[0].y);
+    for (let i = 1; i < highlightPath.length; i++) {
+      ctx.lineTo(highlightPath[i].x, highlightPath[i].y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Draw circle at current end
+    const last = highlightPath[highlightPath.length - 1];
+    ctx.fillStyle = highlightColor || '#e94560';
+    ctx.beginPath();
+    ctx.arc(last.x, last.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function tracePath(startCol) {
+  const path = [];
+  let col = startCol;
+  let row = 0;
+  path.push({ x: getX(col), y: getY(row) });
+
+  while (row < rows - 1) {
+    // Check left
+    if (col > 0 && ladderLines[row][col - 1]) {
+      path.push({ x: getX(col - 1), y: getY(row) });
+      col = col - 1;
+    }
+    // Check right
+    else if (col < cols - 1 && ladderLines[row][col]) {
+      path.push({ x: getX(col + 1), y: getY(row) });
+      col = col + 1;
+    }
+    // Move down
+    row++;
+    path.push({ x: getX(col), y: getY(row) });
+  }
+
+  return { path, endCol: col };
+}
+
+function animatePath(startCol, color, callback) {
+  if (animating) return;
+  animating = true;
+
+  const { path, endCol } = tracePath(startCol);
+  let currentStep = 0;
+  const totalSteps = path.length;
+  const stepsPerFrame = 0.15;
+  let progress = 0;
+
+  function animate() {
+    progress += stepsPerFrame;
+    const currentIndex = Math.min(Math.floor(progress), totalSteps - 1);
+
+    // Build partial path up to current progress
+    const partialPath = path.slice(0, currentIndex + 1);
+
+    // Interpolate to current sub-position
+    if (currentIndex < totalSteps - 1) {
+      const frac = progress - currentIndex;
+      const from = path[currentIndex];
+      const to = path[currentIndex + 1];
+      partialPath.push({
+        x: from.x + (to.x - from.x) * frac,
+        y: from.y + (to.y - from.y) * frac
+      });
+    }
+
+    drawLadder(partialPath, color);
+
+    if (progress < totalSteps - 1) {
+      requestAnimationFrame(animate);
+    } else {
+      drawLadder(path, color);
+      animating = false;
+      if (callback) callback(endCol);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+function buildUI() {
+  const topDiv = document.getElementById('topButtons');
+  const bottomDiv = document.getElementById('bottomLabels');
+  topDiv.innerHTML = '';
+  bottomDiv.innerHTML = '';
+  topDiv.style.width = canvasW + 'px';
+  bottomDiv.style.width = canvasW + 'px';
+
+  for (let i = 0; i < cols; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'player-btn';
+    btn.textContent = playerNames[i];
+    btn.style.width = (colSpacing * 0.8) + 'px';
+    btn.onclick = () => onPlayerClick(i, btn);
+    topDiv.appendChild(btn);
+
+    const label = document.createElement('div');
+    label.className = 'result-label';
+    label.id = `result-${i}`;
+    label.textContent = '?';
+    label.style.width = (colSpacing * 0.8) + 'px';
+    bottomDiv.appendChild(label);
+  }
+}
+
+function onPlayerClick(col, btn) {
+  if (animating) return;
+  if (btn.classList.contains('active')) return;
+
+  btn.classList.add('active');
+  const color = COLORS[col % COLORS.length];
+
+  animatePath(col, color, (endCol) => {
+    const label = document.getElementById(`result-${endCol}`);
+    label.textContent = resultNames[endCol];
+    label.classList.add('revealed');
+    revealedResults.add(endCol);
+  });
+}
+
+function revealAll() {
+  if (animating) return;
+
+  const unrevealed = [];
+  const btns = document.querySelectorAll('.player-btn');
+  for (let i = 0; i < cols; i++) {
+    if (!btns[i].classList.contains('active')) {
+      unrevealed.push(i);
+    }
+  }
+
+  if (unrevealed.length === 0) return;
+
+  let idx = 0;
+  function revealNext() {
+    if (idx >= unrevealed.length) return;
+    const col = unrevealed[idx];
+    const btn = btns[col];
+    btn.classList.add('active');
+    const color = COLORS[col % COLORS.length];
+    animatePath(col, color, (endCol) => {
+      const label = document.getElementById(`result-${endCol}`);
+      label.textContent = resultNames[endCol];
+      label.classList.add('revealed');
+      revealedResults.add(endCol);
+      idx++;
+      setTimeout(revealNext, 300);
+    });
+  }
+  revealNext();
+}
+
+// Initialize
+setupNames();
+</script>
+</body>
+</html>
