@@ -232,7 +232,7 @@ export default function IntroAnimation() {
           </motion.p>
         </div>
 
-        <motion.div style={{ opacity: contentOpacity, y: contentY }} className="pointer-events-none absolute top-1/2 z-10 flex -translate-y-1/2 flex-col items-center justify-center px-6 text-center">
+        <motion.div style={{ opacity: contentOpacity, y: contentY }} className="pointer-events-none absolute top-[58%] z-10 flex -translate-y-1/2 flex-col items-center justify-center px-6 text-center">
           <p 
             className="max-w-5xl font-['Pretendard'] text-xl font-bold text-blue-400 drop-shadow-[0_0_15px_rgba(59,130,246,0.9)] md:whitespace-nowrap md:text-4xl lg:text-5xl"
             style={{ wordBreak: 'keep-all', lineHeight: '1.6' }}
