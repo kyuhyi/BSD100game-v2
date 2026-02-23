@@ -51,8 +51,15 @@ const iframeGames = registry
 
 const allGames = [...nativeGames, ...iframeGames];
 
-// TypeScript 파일 생성
-const modeTypes = [...new Set(nativeGames.map(g => g.mode)), 'iframe'];
+// TypeScript 파일 생성 - 기존 모든 모드 유지
+const modeTypes = [
+  "tetris", "omok", "jigsaw", "hidden", "difference", "airplane", 
+  "whack", "chess", "runner3d", "rhythm", "crystal-puzzle", "neon-stack",
+  "crystal-memory", "helix-jump", "cube-runner", "gem-catcher", "breakout-3d",
+  "orbital-dash", "neon-pong", "prism-shooter", "proverb-quiz", "color-rush-game",
+  "space-defender", "math-blitz", "reflex-master", "beat-catcher", "emoji-match",
+  "word-scramble", "simon-says", "tap-frenzy", "iframe"
+];
 
 let output = `export type GameMode =
   | ${modeTypes.map(m => JSON.stringify(m)).join('\n  | ')};
