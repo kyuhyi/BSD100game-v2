@@ -26,74 +26,70 @@ const CANVAS_WIDTH = 600;
 const CANVAS_HEIGHT = 400;
 const PLAYER_WIDTH = 24;
 const PLAYER_HEIGHT = 32;
-const GRAVITY = 0.6;
-const JUMP_FORCE = -12;
+const GRAVITY = 0.5;
+const JUMP_FORCE = -11;
 const MOVE_SPEED = 5;
 const MAX_JUMPS = 2; // Double jump
 
-// Level definitions
+// Level definitions - 난이도 완화!
 const LEVELS: { platforms: Omit<Platform, "originalX">[]; goal: { x: number; y: number } }[] = [
-  // Level 1 - Easy intro
+  // Level 1 - 쉬운 입문
+  {
+    platforms: [
+      { x: 0, y: 350, width: 180, height: 20, type: "normal" },
+      { x: 220, y: 330, width: 120, height: 20, type: "normal" },
+      { x: 380, y: 300, width: 120, height: 20, type: "normal" },
+      { x: 500, y: 260, width: 100, height: 20, type: "normal" },
+    ],
+    goal: { x: 550, y: 220 },
+  },
+  // Level 2 - 움직이는 플랫폼 소개
   {
     platforms: [
       { x: 0, y: 350, width: 150, height: 20, type: "normal" },
-      { x: 200, y: 320, width: 80, height: 20, type: "normal" },
-      { x: 330, y: 280, width: 80, height: 20, type: "normal" },
-      { x: 450, y: 240, width: 100, height: 20, type: "normal" },
+      { x: 180, y: 320, width: 100, height: 20, type: "moving", moveRange: 60, moveSpeed: 1.5 },
+      { x: 350, y: 280, width: 120, height: 20, type: "normal" },
+      { x: 480, y: 240, width: 110, height: 20, type: "normal" },
     ],
-    goal: { x: 520, y: 200 },
+    goal: { x: 540, y: 200 },
   },
-  // Level 2 - Moving platforms
+  // Level 3 - 점프대 소개
+  {
+    platforms: [
+      { x: 0, y: 350, width: 130, height: 20, type: "normal" },
+      { x: 160, y: 350, width: 80, height: 20, type: "bounce" },
+      { x: 300, y: 250, width: 120, height: 20, type: "normal" },
+      { x: 450, y: 200, width: 100, height: 20, type: "normal" },
+    ],
+    goal: { x: 500, y: 160 },
+  },
+  // Level 4 - 부서지는 플랫폼 소개
+  {
+    platforms: [
+      { x: 0, y: 350, width: 120, height: 20, type: "normal" },
+      { x: 160, y: 320, width: 100, height: 20, type: "fragile" },
+      { x: 300, y: 280, width: 110, height: 20, type: "normal" },
+      { x: 440, y: 240, width: 100, height: 20, type: "fragile" },
+      { x: 520, y: 200, width: 80, height: 20, type: "normal" },
+    ],
+    goal: { x: 550, y: 160 },
+  },
+  // Level 5 - 종합
   {
     platforms: [
       { x: 0, y: 350, width: 100, height: 20, type: "normal" },
-      { x: 150, y: 300, width: 80, height: 20, type: "moving", moveRange: 100, moveSpeed: 2 },
-      { x: 350, y: 250, width: 80, height: 20, type: "normal" },
-      { x: 450, y: 200, width: 80, height: 20, type: "moving", moveRange: 80, moveSpeed: 3 },
+      { x: 140, y: 320, width: 80, height: 20, type: "moving", moveRange: 40, moveSpeed: 1.5 },
+      { x: 280, y: 280, width: 70, height: 20, type: "bounce" },
+      { x: 380, y: 200, width: 90, height: 20, type: "fragile" },
+      { x: 500, y: 160, width: 90, height: 20, type: "normal" },
     ],
-    goal: { x: 520, y: 160 },
-  },
-  // Level 3 - Bounce pads
-  {
-    platforms: [
-      { x: 0, y: 350, width: 100, height: 20, type: "normal" },
-      { x: 130, y: 350, width: 60, height: 20, type: "bounce" },
-      { x: 280, y: 280, width: 80, height: 20, type: "normal" },
-      { x: 400, y: 350, width: 60, height: 20, type: "bounce" },
-      { x: 500, y: 180, width: 80, height: 20, type: "normal" },
-    ],
-    goal: { x: 540, y: 140 },
-  },
-  // Level 4 - Mixed challenge
-  {
-    platforms: [
-      { x: 0, y: 350, width: 80, height: 20, type: "normal" },
-      { x: 120, y: 310, width: 60, height: 20, type: "fragile" },
-      { x: 220, y: 270, width: 70, height: 20, type: "moving", moveRange: 60, moveSpeed: 2.5 },
-      { x: 350, y: 230, width: 50, height: 20, type: "bounce" },
-      { x: 420, y: 150, width: 60, height: 20, type: "fragile" },
-      { x: 520, y: 120, width: 70, height: 20, type: "normal" },
-    ],
-    goal: { x: 550, y: 80 },
-  },
-  // Level 5 - Ultimate challenge
-  {
-    platforms: [
-      { x: 0, y: 350, width: 60, height: 20, type: "normal" },
-      { x: 100, y: 320, width: 50, height: 20, type: "moving", moveRange: 50, moveSpeed: 3 },
-      { x: 200, y: 280, width: 40, height: 20, type: "fragile" },
-      { x: 280, y: 240, width: 40, height: 20, type: "bounce" },
-      { x: 350, y: 180, width: 50, height: 20, type: "moving", moveRange: 70, moveSpeed: 4 },
-      { x: 450, y: 130, width: 40, height: 20, type: "fragile" },
-      { x: 530, y: 80, width: 60, height: 20, type: "normal" },
-    ],
-    goal: { x: 550, y: 40 },
+    goal: { x: 540, y: 120 },
   },
 ];
 
 export default function ParkourGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [gameState, setGameState] = useState<"ready" | "playing" | "win" | "gameover">("ready");
+  const [gameState, setGameState] = useState<"ready" | "playing" | "win">("ready");
   const [level, setLevel] = useState(1);
   const [deaths, setDeaths] = useState(0);
   const [timer, setTimer] = useState(0);
@@ -103,9 +99,20 @@ export default function ParkourGame() {
   const keysRef = useRef<Set<string>>(new Set());
   const animationRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
-  const fragilePlatformsRef = useRef<Map<number, number>>(new Map()); // index -> breakTime
+  const fragilePlatformsRef = useRef<Map<number, number>>(new Map());
 
-  const initLevel = useCallback((levelNum: number) => {
+  const initLevel = useCallback((levelNum: number, resetDeaths: boolean = false) => {
+    // Cancel any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = 0;
+    }
+    
+    if (levelNum > LEVELS.length) {
+      setGameState("win");
+      return;
+    }
+    
     const levelData = LEVELS[levelNum - 1];
     if (!levelData) {
       setGameState("win");
@@ -118,10 +125,10 @@ export default function ParkourGame() {
       originalX: p.x,
     }));
     
-    // Reset player
+    // Reset player to start position
     playerRef.current = {
-      x: 50,
-      y: 300,
+      x: 60,
+      y: 280,
       vx: 0,
       vy: 0,
       onGround: false,
@@ -130,12 +137,13 @@ export default function ParkourGame() {
     
     fragilePlatformsRef.current.clear();
     setLevel(levelNum);
-    setGameState("playing");
     
-    if (levelNum === 1) {
+    if (resetDeaths || levelNum === 1) {
       startTimeRef.current = Date.now();
       setDeaths(0);
     }
+    
+    setGameState("playing");
   }, []);
 
   // Game loop
@@ -150,7 +158,11 @@ export default function ParkourGame() {
     const levelData = LEVELS[level - 1];
     if (!levelData) return;
 
+    let isRunning = true;
+
     const gameLoop = () => {
+      if (!isRunning) return;
+      
       const player = playerRef.current;
       const platforms = platformsRef.current;
       const now = Date.now();
@@ -165,6 +177,7 @@ export default function ParkourGame() {
       
       // Apply gravity
       player.vy += GRAVITY;
+      if (player.vy > 15) player.vy = 15; // Terminal velocity
       
       // Update position
       player.x += player.vx;
@@ -173,26 +186,29 @@ export default function ParkourGame() {
       // Update moving platforms
       platforms.forEach(p => {
         if (p.type === "moving" && p.moveRange && p.moveSpeed && p.originalX !== undefined) {
-          p.x = p.originalX + Math.sin(now / 500 * p.moveSpeed) * p.moveRange;
+          p.x = p.originalX + Math.sin(now / 1000 * p.moveSpeed) * p.moveRange;
         }
       });
       
       // Check fragile platforms
       fragilePlatformsRef.current.forEach((breakTime, idx) => {
         if (now >= breakTime && platforms[idx]) {
-          platforms[idx].y = 9999; // Move off screen
+          platforms[idx].y = 9999;
         }
       });
       
       // Platform collision
       player.onGround = false;
       platforms.forEach((p, idx) => {
+        if (p.y > CANVAS_HEIGHT) return;
+        
+        // Check if player is above platform and falling
         if (
           player.x + PLAYER_WIDTH / 2 > p.x &&
           player.x - PLAYER_WIDTH / 2 < p.x + p.width &&
-          player.y + PLAYER_HEIGHT > p.y &&
-          player.y + PLAYER_HEIGHT < p.y + p.height + 15 &&
-          player.vy > 0
+          player.y + PLAYER_HEIGHT >= p.y &&
+          player.y + PLAYER_HEIGHT <= p.y + p.height + 10 &&
+          player.vy >= 0
         ) {
           player.y = p.y - PLAYER_HEIGHT;
           player.vy = 0;
@@ -201,12 +217,12 @@ export default function ParkourGame() {
           
           // Handle special platforms
           if (p.type === "bounce") {
-            player.vy = JUMP_FORCE * 1.5;
+            player.vy = JUMP_FORCE * 1.6;
             player.onGround = false;
           }
           
           if (p.type === "fragile" && !fragilePlatformsRef.current.has(idx)) {
-            fragilePlatformsRef.current.set(idx, now + 500);
+            fragilePlatformsRef.current.set(idx, now + 800); // 0.8초 후 부서짐
           }
         }
       });
@@ -216,21 +232,28 @@ export default function ParkourGame() {
       
       // Death check (fell off screen)
       if (player.y > CANVAS_HEIGHT + 50) {
+        isRunning = false;
         setDeaths(d => d + 1);
-        initLevel(level);
+        // 딜레이 후 재시작
+        setTimeout(() => {
+          initLevel(level, false);
+        }, 300);
         return;
       }
       
       // Goal check
       const goal = levelData.goal;
       if (
-        Math.abs(player.x - goal.x) < 30 &&
-        Math.abs(player.y - goal.y) < 40
+        Math.abs(player.x - goal.x) < 35 &&
+        Math.abs(player.y - goal.y) < 45
       ) {
+        isRunning = false;
         if (level >= LEVELS.length) {
           setGameState("win");
         } else {
-          initLevel(level + 1);
+          setTimeout(() => {
+            initLevel(level + 1, false);
+          }, 500);
         }
         return;
       }
@@ -243,11 +266,15 @@ export default function ParkourGame() {
       ctx.fillStyle = bgGradient;
       ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
       
+      // Draw death zone indicator
+      ctx.fillStyle = "rgba(239, 68, 68, 0.1)";
+      ctx.fillRect(0, CANVAS_HEIGHT - 30, CANVAS_WIDTH, 30);
+      
       // Draw platforms
       platforms.forEach((p, idx) => {
         if (p.y > CANVAS_HEIGHT) return;
         
-        let color = "#4ade80"; // Normal - green
+        let color = "#4ade80";
         let borderColor = "#22c55e";
         
         if (p.type === "moving") {
@@ -276,9 +303,9 @@ export default function ParkourGame() {
         if (p.type === "bounce") {
           ctx.fillStyle = "#ffffff";
           ctx.beginPath();
-          ctx.moveTo(p.x + p.width / 2 - 10, p.y + 5);
-          ctx.lineTo(p.x + p.width / 2, p.y - 5);
-          ctx.lineTo(p.x + p.width / 2 + 10, p.y + 5);
+          ctx.moveTo(p.x + p.width / 2 - 12, p.y + 5);
+          ctx.lineTo(p.x + p.width / 2, p.y - 8);
+          ctx.lineTo(p.x + p.width / 2 + 12, p.y + 5);
           ctx.fill();
         }
       });
@@ -288,12 +315,12 @@ export default function ParkourGame() {
       ctx.shadowColor = "#fbbf24";
       ctx.shadowBlur = 20;
       ctx.beginPath();
-      ctx.arc(goal.x, goal.y, 15, 0, Math.PI * 2);
+      ctx.arc(goal.x, goal.y, 18, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 16px sans-serif";
+      ctx.font = "bold 20px sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText("⭐", goal.x, goal.y + 6);
+      ctx.fillText("⭐", goal.x, goal.y + 7);
       ctx.shadowBlur = 0;
       
       // Draw player
@@ -311,9 +338,31 @@ export default function ParkourGame() {
       
       // Level info
       ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 14px sans-serif";
+      ctx.font = "bold 16px sans-serif";
       ctx.textAlign = "left";
-      ctx.fillText(`Level ${level}/${LEVELS.length}`, 10, 25);
+      ctx.fillText(`Level ${level}/${LEVELS.length}`, 10, 28);
+      
+      // Platform legend
+      ctx.font = "12px sans-serif";
+      ctx.fillStyle = "#4ade80";
+      ctx.fillText("●", 10, 50);
+      ctx.fillStyle = "#ffffff80";
+      ctx.fillText(" 일반", 22, 50);
+      
+      ctx.fillStyle = "#fbbf24";
+      ctx.fillText("●", 60, 50);
+      ctx.fillStyle = "#ffffff80";
+      ctx.fillText(" 이동", 72, 50);
+      
+      ctx.fillStyle = "#f472b6";
+      ctx.fillText("●", 110, 50);
+      ctx.fillStyle = "#ffffff80";
+      ctx.fillText(" 점프", 122, 50);
+      
+      ctx.fillStyle = "#94a3b8";
+      ctx.fillText("●", 160, 50);
+      ctx.fillStyle = "#ffffff80";
+      ctx.fillText(" 부서짐", 172, 50);
       
       animationRef.current = requestAnimationFrame(gameLoop);
     };
@@ -321,7 +370,10 @@ export default function ParkourGame() {
     animationRef.current = requestAnimationFrame(gameLoop);
 
     return () => {
-      cancelAnimationFrame(animationRef.current);
+      isRunning = false;
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
   }, [gameState, level, initLevel]);
 
@@ -346,7 +398,7 @@ export default function ParkourGame() {
       
       if (key === "r" && gameState === "playing") {
         setDeaths(d => d + 1);
-        initLevel(level);
+        initLevel(level, false);
       }
     };
     
@@ -362,6 +414,16 @@ export default function ParkourGame() {
       window.removeEventListener("keyup", handleKeyUp);
     };
   }, [gameState, level, initLevel]);
+
+  const handleJump = () => {
+    if (gameState !== "playing") return;
+    const player = playerRef.current;
+    if (player.jumpCount < MAX_JUMPS) {
+      player.vy = JUMP_FORCE;
+      player.jumpCount++;
+      player.onGround = false;
+    }
+  };
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -382,16 +444,16 @@ export default function ParkourGame() {
         {gameState === "ready" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 rounded-xl">
             <h2 className="text-3xl font-bold text-white mb-4">🏃 Parkour</h2>
-            <p className="text-white/70 mb-2">플랫폼을 점프해서 건너세요!</p>
-            <p className="text-white/70 mb-1">🟢 일반 | 🟡 이동 | ⬜ 부서짐 | 🩷 점프대</p>
-            <p className="text-white/70 mb-6">더블 점프 가능!</p>
+            <p className="text-white/70 mb-2">플랫폼을 점프해서 ⭐에 도달하세요!</p>
+            <p className="text-white/70 mb-1 text-sm">🟢일반 🟡이동 ⬜부서짐 🩷점프대</p>
+            <p className="text-cyan-400 mb-6">✨ 더블 점프 가능!</p>
             <button
-              onClick={() => initLevel(1)}
+              onClick={() => initLevel(1, true)}
               className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold rounded-full hover:scale-105 transition-transform"
             >
               게임 시작
             </button>
-            <p className="text-white/50 text-sm mt-4">방향키/WASD 이동 | 스페이스 점프 | R 리스타트</p>
+            <p className="text-white/50 text-sm mt-4">← → 이동 | ↑/Space 점프 | R 리스타트</p>
           </div>
         )}
         
@@ -401,10 +463,7 @@ export default function ParkourGame() {
             <p className="text-xl text-white mb-2">클리어 시간: <span className="text-cyan-400">{timer}초</span></p>
             <p className="text-lg text-white mb-6">사망 횟수: <span className="text-red-400">{deaths}회</span></p>
             <button
-              onClick={() => {
-                setTimer(0);
-                initLevel(1);
-              }}
+              onClick={() => initLevel(1, true)}
               className="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold rounded-full hover:scale-105 transition-transform"
             >
               다시 도전
@@ -424,14 +483,7 @@ export default function ParkourGame() {
         </button>
         <button
           className="w-20 h-16 bg-green-500/30 rounded-xl flex items-center justify-center text-2xl active:bg-green-500/50"
-          onTouchStart={() => {
-            const player = playerRef.current;
-            if (player.jumpCount < MAX_JUMPS) {
-              player.vy = JUMP_FORCE;
-              player.jumpCount++;
-              player.onGround = false;
-            }
-          }}
+          onTouchStart={handleJump}
         >
           ⬆️
         </button>
