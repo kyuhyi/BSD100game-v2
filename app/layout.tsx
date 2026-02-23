@@ -40,15 +40,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/static/woff2/SUIT.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css" />
-      </head>
-      <body>
+        {/* Google AdSense 자동 광고 */}
         <Script
           id="adsense-auto-ads"
           async
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6884566372095161"
           crossOrigin="anonymous"
         />
+        <meta name="google-adsense-account" content="ca-pub-6884566372095161" />
+      </head>
+      <body>
         {children}
       </body>
     </html>
