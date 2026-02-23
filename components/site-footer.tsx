@@ -15,12 +15,12 @@ export default function SiteFooter() {
                 className="h-10 w-auto opacity-90"
               />
               <div>
-                <p className="text-lg font-bold text-white">바퍼 ?��???/p>
+                <p className="text-lg font-bold text-white">바퍼 재믹스</p>
                 <p className="text-xs text-white/50">by BSD Class</p>
               </div>
             </div>
             <p className="mt-2 max-w-xs text-center text-sm text-white/40 md:text-left">
-              AI?� ?�께 만드??무한??게임???�계
+              AI와 함께 만드는 무한한 게임의 세계
             </p>
           </div>
 
@@ -32,12 +32,12 @@ export default function SiteFooter() {
                 <li>
                   <a href="https://bsd-3.kit.com/kakao" target="_blank" rel="noopener noreferrer" 
                     className="transition-colors hover:text-blue-400">
-                    ?�� 바이브코???�강
+                    바이브코딩 특강
                   </a>
                 </li>
                 <li>
                   <a href="#" className="transition-colors hover:text-blue-400">
-                    ?�� ?�스?�그램
+                    인스타그램
                   </a>
                 </li>
               </ul>
@@ -47,12 +47,12 @@ export default function SiteFooter() {
               <ul className="space-y-2 text-sm text-white/50">
                 <li>
                   <a href="#" className="transition-colors hover:text-blue-400">
-                    ?�� 문의?�기
+                    문의하기
                   </a>
                 </li>
                 <li>
                   <a href="#" className="transition-colors hover:text-blue-400">
-                    ?�� 게임 ?�안
+                    게임 제안
                   </a>
                 </li>
               </ul>
@@ -67,7 +67,7 @@ export default function SiteFooter() {
               rel="noopener noreferrer"
               className="group flex items-center gap-2 rounded-full bg-blue-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-500/20 transition-all hover:bg-blue-600 hover:shadow-blue-500/40"
             >
-              <span>바이브코???�작?�기</span>
+              <span>바이브코딩 시작하기</span>
               <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -89,7 +89,7 @@ export default function SiteFooter() {
             © 2026 BSD Class. All rights reserved.
           </p>
           <p className="text-xs text-white/30">
-            Made with ?�� by @BSD_funneldding
+            Made with 💜 by @BSD_funneldding
           </p>
         </div>
       </div>
