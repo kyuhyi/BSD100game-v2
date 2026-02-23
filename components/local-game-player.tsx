@@ -88,6 +88,10 @@ const TntRunGame = dynamic(() => import("@/components/games/tnt-run"), {
   ssr: false,
   loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
 });
+const SpleefGame = dynamic(() => import("@/components/games/spleef"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
 const IframeGame = dynamic(() => import("@/components/games/iframe-game"), {
   ssr: false,
   loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
@@ -771,6 +775,7 @@ function EngineView({ game, seed }: { game: GameMeta; seed: number }) {
   if (mode === "simon-says") return <SimonSaysGame />;
   if (mode === "tap-frenzy") return <TapFrenzyGame />;
   if (mode === "tnt-run") return <TntRunGame />;
+  if (mode === "spleef") return <SpleefGame />;
   return <div>준비중</div>;
 }
 
