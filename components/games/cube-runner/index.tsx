@@ -86,18 +86,33 @@ function Track() {
         <planeGeometry args={[6, 80]} />
         <meshStandardMaterial color="#0a0a1a" metalness={0.8} roughness={0.3} />
       </mesh>
-      {/* Lane lines */}
+      {/* Lane divider rails - more visible */}
       {[-2.25, -0.75, 0.75, 2.25].map((x, i) => (
-        <mesh key={i} position={[x, 0.01, -20]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[0.03, 80]} />
-          <meshBasicMaterial color="#06b6d4" transparent opacity={0.4} />
+        <group key={i}>
+          {/* Main rail line */}
+          <mesh position={[x, 0.02, -20]} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[0.08, 80]} />
+            <meshBasicMaterial color="#06b6d4" transparent opacity={0.7} />
+          </mesh>
+          {/* Glow effect for rails */}
+          <mesh position={[x, 0.015, -20]} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[0.2, 80]} />
+            <meshBasicMaterial color="#06b6d4" transparent opacity={0.2} />
+          </mesh>
+        </group>
+      ))}
+      {/* Lane center markers */}
+      {LANES.map((x, i) => (
+        <mesh key={`lane${i}`} position={[x, 0.01, -20]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.8, 80]} />
+          <meshBasicMaterial color={i === 1 ? "#1e3a5f" : "#0f1729"} transparent opacity={0.5} />
         </mesh>
       ))}
       {/* Moving ground lines for speed effect */}
       {Array.from({ length: 40 }, (_, i) => (
         <mesh key={`g${i}`} position={[0, 0.01, -i * 2]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[5.5, 0.02]} />
-          <meshBasicMaterial color="#3b82f6" transparent opacity={0.15} />
+          <planeGeometry args={[5.5, 0.03]} />
+          <meshBasicMaterial color="#3b82f6" transparent opacity={0.25} />
         </mesh>
       ))}
     </group>
@@ -322,20 +337,26 @@ export default function CubeRunnerGame() {
               <div className="text-lg font-extralight text-slate-200">{speed.current.toFixed(1)}</div>
             </div>
           </div>
-          {/* Mobile controls */}
-          <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-6">
+          {/* Mobile controls - enhanced visibility */}
+          <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-4">
             <button
               onClick={moveLeft}
-              className="rounded-xl border border-cyan-500/30 bg-[#0f0f1e]/60 px-6 py-3 text-xl text-slate-200 backdrop-blur-xl active:bg-cyan-500/30"
+              className="flex h-16 w-20 items-center justify-center rounded-2xl border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/30 to-cyan-600/20 text-3xl text-cyan-200 shadow-[0_0_20px_rgba(6,182,212,0.3)] backdrop-blur-xl active:scale-95 active:bg-cyan-500/50"
             >
               ◀
             </button>
             <button
               onClick={moveRight}
-              className="rounded-xl border border-cyan-500/30 bg-[#0f0f1e]/60 px-6 py-3 text-xl text-slate-200 backdrop-blur-xl active:bg-cyan-500/30"
+              className="flex h-16 w-20 items-center justify-center rounded-2xl border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/30 to-cyan-600/20 text-3xl text-cyan-200 shadow-[0_0_20px_rgba(6,182,212,0.3)] backdrop-blur-xl active:scale-95 active:bg-cyan-500/50"
             >
               ▶
             </button>
+          </div>
+          {/* Keyboard hint */}
+          <div className="pointer-events-none absolute bottom-24 left-0 right-0 z-10 flex justify-center">
+            <div className="rounded-lg bg-black/40 px-3 py-1 text-xs text-cyan-400/70 backdrop-blur-sm">
+              ← → 또는 A D 키로 이동
+            </div>
           </div>
         </>
       )}

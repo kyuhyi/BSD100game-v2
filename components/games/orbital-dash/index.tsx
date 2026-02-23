@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect, Suspense } from "react";
+import { useState, useCallback, useRef, useEffect, Suspense, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Trail, Sphere, Ring } from "@react-three/drei";
 import { EffectComposer, Bloom, ChromaticAberration } from "@react-three/postprocessing";
@@ -236,10 +236,20 @@ export default function OrbitalDashGame() {
     return () => clearInterval(interval);
   }, [started, gameOver, playerAngle, playerLane, speed]);
 
-  const changeLane = (dir: number) => {
+  const changeLane = useCallback((dir: number) => {
     if (gameOver) return;
     setPlayerLane((prev) => Math.max(0, Math.min(2, prev + dir)));
-  };
+  }, [gameOver]);
+
+  // Keyboard controls
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft" || e.key === "a") changeLane(-1);
+      if (e.key === "ArrowRight" || e.key === "d") changeLane(1);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [changeLane]);
 
   const restart = () => {
     setStarted(true);
@@ -288,13 +298,18 @@ export default function OrbitalDashGame() {
               <div className="text-center text-2xl font-black tracking-wider text-white">{score}</div>
             </div>
           </div>
-          <div className="absolute bottom-6 left-0 right-0 z-10 flex justify-center gap-4">
-            <button onClick={() => changeLane(-1)} className="h-16 w-16 rounded-full border border-cyan-500/40 bg-cyan-500/20 text-2xl text-white backdrop-blur-md active:bg-cyan-500/40">
-              ←
-            </button>
-            <button onClick={() => changeLane(1)} className="h-16 w-16 rounded-full border border-cyan-500/40 bg-cyan-500/20 text-2xl text-white backdrop-blur-md active:bg-cyan-500/40">
-              →
-            </button>
+          <div className="absolute bottom-6 left-0 right-0 z-10 flex flex-col items-center gap-2">
+            <div className="flex justify-center gap-4">
+              <button onClick={() => changeLane(-1)} className="flex h-16 w-20 items-center justify-center rounded-2xl border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/30 to-purple-600/20 text-3xl text-cyan-200 shadow-[0_0_20px_rgba(6,182,212,0.3)] backdrop-blur-xl active:scale-95 active:bg-cyan-500/50">
+                ◀
+              </button>
+              <button onClick={() => changeLane(1)} className="flex h-16 w-20 items-center justify-center rounded-2xl border-2 border-cyan-400/50 bg-gradient-to-b from-cyan-500/30 to-purple-600/20 text-3xl text-cyan-200 shadow-[0_0_20px_rgba(6,182,212,0.3)] backdrop-blur-xl active:scale-95 active:bg-cyan-500/50">
+                ▶
+              </button>
+            </div>
+            <div className="rounded-lg bg-black/40 px-3 py-1 text-xs text-cyan-400/70 backdrop-blur-sm">
+              ← → 키로 레인 변경
+            </div>
           </div>
         </>
       )}

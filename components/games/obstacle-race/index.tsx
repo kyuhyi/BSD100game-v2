@@ -162,24 +162,54 @@ export default function ObstacleRaceGame() {
         ctx.fillRect(x, y, 2, 2);
       }
       
-      // Ground
-      ctx.fillStyle = "#2d3748";
+      // Ground with gradient
+      const groundGradient = ctx.createLinearGradient(0, GROUND_Y, 0, CANVAS_HEIGHT);
+      groundGradient.addColorStop(0, "#3d4a5c");
+      groundGradient.addColorStop(1, "#1e2836");
+      ctx.fillStyle = groundGradient;
       ctx.fillRect(0, GROUND_Y, CANVAS_WIDTH, CANVAS_HEIGHT - GROUND_Y);
       
-      // Lane markers
+      // Lane backgrounds (3 lanes: -1, 0, 1)
       const centerX = CANVAS_WIDTH / 2;
-      ctx.strokeStyle = "#4a5568";
-      ctx.lineWidth = 3;
-      ctx.setLineDash([30, 20]);
+      const laneColors = ["#2a3548", "#323d52", "#2a3548"];
+      for (let i = -1; i <= 1; i++) {
+        const laneX = centerX + i * LANE_WIDTH - LANE_WIDTH / 2;
+        ctx.fillStyle = laneColors[i + 1];
+        ctx.fillRect(laneX, GROUND_Y, LANE_WIDTH, CANVAS_HEIGHT - GROUND_Y);
+      }
+      
+      // Lane divider rails - glowing cyan lines
+      ctx.shadowColor = "#06b6d4";
+      ctx.shadowBlur = 8;
+      ctx.strokeStyle = "#06b6d4";
+      ctx.lineWidth = 4;
+      ctx.setLineDash([]);
+      
+      // Left rail
       ctx.beginPath();
       ctx.moveTo(centerX - LANE_WIDTH, GROUND_Y);
       ctx.lineTo(centerX - LANE_WIDTH, CANVAS_HEIGHT);
       ctx.stroke();
+      
+      // Right rail
       ctx.beginPath();
       ctx.moveTo(centerX + LANE_WIDTH, GROUND_Y);
       ctx.lineTo(centerX + LANE_WIDTH, CANVAS_HEIGHT);
       ctx.stroke();
+      ctx.shadowBlur = 0;
       ctx.setLineDash([]);
+      
+      // Outer edge rails
+      ctx.strokeStyle = "#4a90a4";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(centerX - LANE_WIDTH * 1.5, GROUND_Y);
+      ctx.lineTo(centerX - LANE_WIDTH * 1.5, CANVAS_HEIGHT);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(centerX + LANE_WIDTH * 1.5, GROUND_Y);
+      ctx.lineTo(centerX + LANE_WIDTH * 1.5, CANVAS_HEIGHT);
+      ctx.stroke();
       
       // Draw obstacles
       obstaclesRef.current.forEach(obs => {
@@ -365,7 +395,36 @@ export default function ObstacleRaceGame() {
         )}
       </div>
       
-      <p className="text-white/50 text-sm md:hidden">스와이프: ← → 이동 | ↑ 점프 | ↓ 슬라이드</p>
+      {/* Mobile controls */}
+      <div className="grid grid-cols-3 gap-2 md:hidden mt-2">
+        <button
+          className="h-14 w-full bg-gradient-to-b from-blue-500/30 to-blue-600/20 rounded-xl border border-blue-400/40 flex items-center justify-center text-2xl text-blue-200 active:scale-95"
+          onTouchStart={() => { if (gameState === "playing") { const p = playerRef.current; if (p.lane > -1) p.lane--; } }}
+        >
+          ◀
+        </button>
+        <div className="flex flex-col gap-1">
+          <button
+            className="flex-1 bg-gradient-to-b from-green-500/30 to-green-600/20 rounded-xl border border-green-400/40 flex items-center justify-center text-lg text-green-200 active:scale-95"
+            onTouchStart={() => { if (gameState === "playing") { const p = playerRef.current; if (!p.isJumping) { p.isJumping = true; p.vy = -18; } } }}
+          >
+            점프↑
+          </button>
+          <button
+            className="flex-1 bg-gradient-to-b from-purple-500/30 to-purple-600/20 rounded-xl border border-purple-400/40 flex items-center justify-center text-lg text-purple-200 active:scale-95"
+            onTouchStart={() => { if (gameState === "playing") { const p = playerRef.current; if (!p.isSliding && !p.isJumping) { p.isSliding = true; p.slideTimer = 25; } } }}
+          >
+            슬라이드↓
+          </button>
+        </div>
+        <button
+          className="h-14 w-full bg-gradient-to-b from-blue-500/30 to-blue-600/20 rounded-xl border border-blue-400/40 flex items-center justify-center text-2xl text-blue-200 active:scale-95"
+          onTouchStart={() => { if (gameState === "playing") { const p = playerRef.current; if (p.lane < 1) p.lane++; } }}
+        >
+          ▶
+        </button>
+      </div>
+      <p className="text-white/50 text-xs md:hidden mt-2">← → 이동 | ↑ 점프 | ↓ 슬라이드</p>
     </div>
   );
 }

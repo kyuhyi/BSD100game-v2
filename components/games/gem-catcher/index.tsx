@@ -169,6 +169,21 @@ export default function GemCatcherGame() {
     basketXRef.current = basketX;
   }, [basketX]);
 
+  // Keyboard controls
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!started || gameOver) return;
+      if (e.key === "ArrowLeft" || e.key === "a") {
+        setBasketX((prev) => Math.max(-FIELD_W, prev - 0.5));
+      }
+      if (e.key === "ArrowRight" || e.key === "d") {
+        setBasketX((prev) => Math.min(FIELD_W, prev + 0.5));
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [started, gameOver]);
+
   // Timer
   useEffect(() => {
     if (!started || gameOver) return;
@@ -342,20 +357,40 @@ export default function GemCatcherGame() {
       )}
 
       {started && !gameOver && (
-        <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex justify-between p-4">
-          <div className="rounded-xl border border-purple-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
-            <div className="text-[0.6rem] uppercase tracking-[0.25em] text-purple-400">Score</div>
-            <div className="text-lg font-extralight text-slate-200">{score}</div>
+        <>
+          <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex justify-between p-4">
+            <div className="rounded-xl border border-purple-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
+              <div className="text-[0.6rem] uppercase tracking-[0.25em] text-purple-400">Score</div>
+              <div className="text-lg font-extralight text-slate-200">{score}</div>
+            </div>
+            <div className="rounded-xl border border-amber-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
+              <div className="text-[0.6rem] uppercase tracking-[0.25em] text-amber-400">Combo</div>
+              <div className="text-lg font-extralight text-slate-200">x{combo}</div>
+            </div>
+            <div className="rounded-xl border border-purple-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
+              <div className="text-[0.6rem] uppercase tracking-[0.25em] text-purple-400">Time</div>
+              <div className="text-lg font-extralight text-slate-200">{timeLeft}s</div>
+            </div>
           </div>
-          <div className="rounded-xl border border-amber-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
-            <div className="text-[0.6rem] uppercase tracking-[0.25em] text-amber-400">Combo</div>
-            <div className="text-lg font-extralight text-slate-200">x{combo}</div>
+          {/* Mobile button controls */}
+          <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-between px-4">
+            <button
+              onPointerDown={() => setBasketX((prev) => Math.max(-FIELD_W, prev - 0.8))}
+              className="flex h-16 w-20 items-center justify-center rounded-2xl border-2 border-purple-400/50 bg-gradient-to-b from-purple-500/30 to-purple-600/20 text-3xl text-purple-200 shadow-[0_0_20px_rgba(139,92,246,0.3)] backdrop-blur-xl active:scale-95 active:bg-purple-500/50"
+            >
+              ◀
+            </button>
+            <div className="rounded-lg bg-black/40 px-3 py-1 text-xs text-purple-400/70 backdrop-blur-sm self-center">
+              드래그 또는 ← → 키
+            </div>
+            <button
+              onPointerDown={() => setBasketX((prev) => Math.min(FIELD_W, prev + 0.8))}
+              className="flex h-16 w-20 items-center justify-center rounded-2xl border-2 border-purple-400/50 bg-gradient-to-b from-purple-500/30 to-purple-600/20 text-3xl text-purple-200 shadow-[0_0_20px_rgba(139,92,246,0.3)] backdrop-blur-xl active:scale-95 active:bg-purple-500/50"
+            >
+              ▶
+            </button>
           </div>
-          <div className="rounded-xl border border-purple-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
-            <div className="text-[0.6rem] uppercase tracking-[0.25em] text-purple-400">Time</div>
-            <div className="text-lg font-extralight text-slate-200">{timeLeft}s</div>
-          </div>
-        </div>
+        </>
       )}
     </div>
   );

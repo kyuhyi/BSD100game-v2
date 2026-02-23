@@ -194,6 +194,22 @@ export default function Breakout3DGame() {
   useEffect(() => { ballRef.current = ball; }, [ball]);
   useEffect(() => { livesRef.current = lives; }, [lives]);
 
+  // Keyboard controls
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!started || gameOver || cleared) return;
+      const halfW = FIELD_W / 2;
+      if (e.key === "ArrowLeft" || e.key === "a") {
+        setPaddleX((prev) => Math.max(-halfW + PADDLE_W / 2, prev - 0.4));
+      }
+      if (e.key === "ArrowRight" || e.key === "d") {
+        setPaddleX((prev) => Math.min(halfW - PADDLE_W / 2, prev + 0.4));
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [started, gameOver, cleared]);
+
   // Game loop
   useEffect(() => {
     if (!started || gameOver || cleared) return;
@@ -385,20 +401,46 @@ export default function Breakout3DGame() {
       )}
 
       {started && !gameOver && !cleared && (
-        <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex justify-between p-4">
-          <div className="rounded-xl border border-orange-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
-            <div className="text-[0.6rem] uppercase tracking-[0.25em] text-orange-400">Score</div>
-            <div className="text-lg font-extralight text-slate-200">{score}</div>
+        <>
+          <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex justify-between p-4">
+            <div className="rounded-xl border border-orange-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
+              <div className="text-[0.6rem] uppercase tracking-[0.25em] text-orange-400">Score</div>
+              <div className="text-lg font-extralight text-slate-200">{score}</div>
+            </div>
+            <div className="rounded-xl border border-orange-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
+              <div className="text-[0.6rem] uppercase tracking-[0.25em] text-orange-400">Bricks</div>
+              <div className="text-lg font-extralight text-slate-200">{aliveBricks}/{ROWS * COLS}</div>
+            </div>
+            <div className="rounded-xl border border-rose-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
+              <div className="text-[0.6rem] uppercase tracking-[0.25em] text-rose-400">Lives</div>
+              <div className="text-lg font-extralight text-slate-200">{"❤️".repeat(lives)}</div>
+            </div>
           </div>
-          <div className="rounded-xl border border-orange-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
-            <div className="text-[0.6rem] uppercase tracking-[0.25em] text-orange-400">Bricks</div>
-            <div className="text-lg font-extralight text-slate-200">{aliveBricks}/{ROWS * COLS}</div>
+          {/* Mobile button controls */}
+          <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-between px-4">
+            <button
+              onPointerDown={() => {
+                const halfW = FIELD_W / 2;
+                setPaddleX((prev) => Math.max(-halfW + PADDLE_W / 2, prev - 0.6));
+              }}
+              className="flex h-16 w-20 items-center justify-center rounded-2xl border-2 border-orange-400/50 bg-gradient-to-b from-orange-500/30 to-orange-600/20 text-3xl text-orange-200 shadow-[0_0_20px_rgba(249,115,22,0.3)] backdrop-blur-xl active:scale-95 active:bg-orange-500/50"
+            >
+              ◀
+            </button>
+            <div className="rounded-lg bg-black/40 px-3 py-1 text-xs text-orange-400/70 backdrop-blur-sm self-center">
+              드래그 또는 ← → 키
+            </div>
+            <button
+              onPointerDown={() => {
+                const halfW = FIELD_W / 2;
+                setPaddleX((prev) => Math.min(halfW - PADDLE_W / 2, prev + 0.6));
+              }}
+              className="flex h-16 w-20 items-center justify-center rounded-2xl border-2 border-orange-400/50 bg-gradient-to-b from-orange-500/30 to-orange-600/20 text-3xl text-orange-200 shadow-[0_0_20px_rgba(249,115,22,0.3)] backdrop-blur-xl active:scale-95 active:bg-orange-500/50"
+            >
+              ▶
+            </button>
           </div>
-          <div className="rounded-xl border border-rose-500/20 bg-[#0f0f1e]/70 px-4 py-2 backdrop-blur-xl">
-            <div className="text-[0.6rem] uppercase tracking-[0.25em] text-rose-400">Lives</div>
-            <div className="text-lg font-extralight text-slate-200">{"❤️".repeat(lives)}</div>
-          </div>
-        </div>
+        </>
       )}
     </div>
   );

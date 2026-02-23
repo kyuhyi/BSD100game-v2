@@ -228,11 +228,21 @@ export default function HelixJumpGame() {
       )}
 
       {started && !gameOver && !isWin && (
-        <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex justify-center p-4">
-          <div className="rounded-xl border border-rose-500/20 bg-[#0f0f1e]/70 px-6 py-2 backdrop-blur-xl">
-            <div className="text-center text-2xl font-extralight tracking-wider text-slate-200">{score}/{RING_COUNT}</div>
+        <>
+          <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex justify-center p-4">
+            <div className="rounded-xl border border-rose-500/20 bg-[#0f0f1e]/70 px-6 py-2 backdrop-blur-xl">
+              <div className="text-center text-2xl font-extralight tracking-wider text-slate-200">{score}/{RING_COUNT}</div>
+            </div>
           </div>
-        </div>
+          {/* Control hint */}
+          <div className="pointer-events-none absolute bottom-4 left-0 right-0 z-10 flex justify-center">
+            <div className="flex items-center gap-2 rounded-xl border border-rose-500/20 bg-[#0f0f1e]/50 px-4 py-2 backdrop-blur-xl">
+              <span className="text-2xl">👆</span>
+              <span className="text-sm text-rose-300/80">드래그해서 회전</span>
+              <span className="text-2xl">👆</span>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
