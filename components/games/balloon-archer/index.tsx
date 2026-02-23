@@ -290,25 +290,25 @@ export default function BalloonArcherGame() {
     return () => clearInterval(t);
   }, [started, gameOver]);
 
-  // Spawn balloons
+  // Spawn balloons - slower and easier
   useEffect(() => {
     if (!started || gameOver) return;
     const spawnBalloon = () => {
       const side = Math.random() < 0.5 ? -1 : 1;
       const balloon: Balloon = {
         id: nextBalloonId.current++,
-        x: side * 6,
-        y: -3 + Math.random() * 4,
-        z: -8 - Math.random() * 5,
-        vx: -side * (0.5 + Math.random() * 1),
-        vy: 0.3 + Math.random() * 0.5,
+        x: side * 5,
+        y: -2 + Math.random() * 3,
+        z: -6 - Math.random() * 3, // closer to player
+        vx: -side * (0.15 + Math.random() * 0.25), // much slower horizontal
+        vy: 0.1 + Math.random() * 0.15, // much slower vertical
         color: BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)],
-        scale: 0.7 + Math.random() * 0.5,
+        scale: 0.9 + Math.random() * 0.4, // bigger balloons
         popped: false,
       };
       setBalloons((prev) => [...prev, balloon]);
     };
-    const interval = setInterval(spawnBalloon, 800);
+    const interval = setInterval(spawnBalloon, 1200); // spawn less frequently
     spawnBalloon();
     return () => clearInterval(interval);
   }, [started, gameOver]);
@@ -348,7 +348,7 @@ export default function BalloonArcherGame() {
             x: arrow.x + arrow.vx * delta,
             y: arrow.y + arrow.vy * delta,
             z: arrow.z + arrow.vz * delta,
-            vy: arrow.vy - 2 * delta, // gravity
+            vy: arrow.vy - 0.5 * delta, // less gravity - arrows fly straighter
           };
 
           // Check collision with balloons
@@ -361,7 +361,8 @@ export default function BalloonArcherGame() {
                 (newArrow.y - b.y) ** 2 +
                 (newArrow.z - b.z) ** 2
               );
-              if (dist < 0.6 * b.scale) {
+              // Larger hit area for easier gameplay
+              if (dist < 1.0 * b.scale) {
                 hit = true;
                 comboRef.current += 1;
                 const multiplier = Math.min(comboRef.current, 5);
@@ -415,15 +416,16 @@ export default function BalloonArcherGame() {
     setCharging(false);
 
     const power = Math.min(chargeTime, 1.5) / 1.5;
-    const speed = 8 + power * 12;
+    const speed = 10 + power * 8; // faster base speed
 
+    // Arrow goes straight toward where you're aiming
     const arrow: Arrow = {
       id: nextArrowId.current++,
-      x: aimX * 0.3,
-      y: aimY * 0.3 - 2,
-      z: 4,
-      vx: aimX * 3,
-      vy: aimY * 3 + 2,
+      x: 0,
+      y: -1.5,
+      z: 3,
+      vx: aimX * 4, // aim direction
+      vy: aimY * 4 + 1, // slight upward arc
       vz: -speed,
     };
     setArrows((prev) => [...prev, arrow]);
