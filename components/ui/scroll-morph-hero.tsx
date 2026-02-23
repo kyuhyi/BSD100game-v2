@@ -226,16 +226,16 @@ export default function IntroAnimation() {
             initial={{ opacity: 0 }}
             animate={introPhase === "circle" && morphValue < 0.5 ? { opacity: 0.5 - morphValue } : { opacity: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="mt-5 bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-lime-300 bg-clip-text font-['Pretendard'] text-base font-bold tracking-[0.08em] text-transparent drop-shadow-[0_0_10px_rgba(56,189,248,0.9)] animate-pulse md:text-2xl"
+            className="mt-5 font-['Pretendard'] text-base font-bold tracking-[0.08em] text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.9)] animate-pulse md:text-2xl"
           >
             누구나 가볍게 게임을 즐겨보다
           </motion.p>
         </div>
 
         <motion.div style={{ opacity: contentOpacity, y: contentY }} className="pointer-events-none absolute top-1/2 z-10 flex -translate-y-1/2 flex-col items-center justify-center px-6 text-center">
-          <p className="max-w-5xl bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-lime-300 bg-clip-text font-['Pretendard'] text-xl font-bold leading-snug text-transparent drop-shadow-[0_0_15px_rgba(56,189,248,0.9)] md:text-4xl lg:text-5xl">
+          <p className="max-w-5xl font-['Pretendard'] text-xl font-bold leading-snug text-blue-400 drop-shadow-[0_0_15px_rgba(59,130,246,0.9)] md:text-4xl lg:text-5xl">
             {typedText}
-            <span className="ml-1 animate-pulse text-cyan-300">|</span>
+            <span className="ml-1 animate-pulse text-blue-300">|</span>
           </p>
         </motion.div>
 

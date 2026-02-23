@@ -1,8 +1,8 @@
 export default function SiteFooter() {
   return (
-    <footer className="relative border-t border-white/10 bg-gradient-to-b from-transparent to-black/50">
+    <footer className="relative border-t border-white/10 bg-black/50">
       {/* Wave decoration */}
-      <div className="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
+      <div className="absolute -top-px left-0 right-0 h-px bg-blue-500/50" />
       
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
@@ -15,12 +15,12 @@ export default function SiteFooter() {
                 className="h-10 w-auto opacity-90"
               />
               <div>
-                <p className="text-lg font-bold text-white">바퍼 재믹스</p>
+                <p className="text-lg font-bold text-white">바퍼 ?��???/p>
                 <p className="text-xs text-white/50">by BSD Class</p>
               </div>
             </div>
             <p className="mt-2 max-w-xs text-center text-sm text-white/40 md:text-left">
-              AI와 함께 만드는 무한한 게임의 세계
+              AI?� ?�께 만드??무한??게임???�계
             </p>
           </div>
 
@@ -31,13 +31,13 @@ export default function SiteFooter() {
               <ul className="space-y-2 text-sm text-white/50">
                 <li>
                   <a href="https://bsd-3.kit.com/kakao" target="_blank" rel="noopener noreferrer" 
-                    className="transition-colors hover:text-cyan-400">
-                    🎓 바이브코딩 특강
+                    className="transition-colors hover:text-blue-400">
+                    ?�� 바이브코???�강
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="transition-colors hover:text-cyan-400">
-                    📱 인스타그램
+                  <a href="#" className="transition-colors hover:text-blue-400">
+                    ?�� ?�스?�그램
                   </a>
                 </li>
               </ul>
@@ -46,13 +46,13 @@ export default function SiteFooter() {
               <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-white/60">Support</p>
               <ul className="space-y-2 text-sm text-white/50">
                 <li>
-                  <a href="#" className="transition-colors hover:text-cyan-400">
-                    📧 문의하기
+                  <a href="#" className="transition-colors hover:text-blue-400">
+                    ?�� 문의?�기
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="transition-colors hover:text-cyan-400">
-                    💡 게임 제안
+                  <a href="#" className="transition-colors hover:text-blue-400">
+                    ?�� 게임 ?�안
                   </a>
                 </li>
               </ul>
@@ -65,9 +65,9 @@ export default function SiteFooter() {
               href="https://bsd-3.kit.com/kakao" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 transition-all hover:shadow-cyan-500/40"
+              className="group flex items-center gap-2 rounded-full bg-blue-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-500/20 transition-all hover:bg-blue-600 hover:shadow-blue-500/40"
             >
-              <span>🚀 바이브코딩 시작하기</span>
+              <span>바이브코???�작?�기</span>
               <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -89,7 +89,7 @@ export default function SiteFooter() {
             © 2026 BSD Class. All rights reserved.
           </p>
           <p className="text-xs text-white/30">
-            Made with 💜 by @BSD_funneldding
+            Made with ?�� by @BSD_funneldding
           </p>
         </div>
       </div>
