@@ -232,8 +232,8 @@ export default function IntroAnimation() {
           </motion.p>
         </div>
 
-        <motion.div style={{ opacity: contentOpacity, y: contentY }} className="pointer-events-none absolute top-1/2 z-10 flex -translate-y-1/2 flex-col items-center justify-center px-4 text-center">
-          <p className="max-w-4xl bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-lime-300 bg-clip-text font-['Pretendard'] text-sm font-bold leading-relaxed text-transparent drop-shadow-[0_0_10px_rgba(56,189,248,0.9)] md:text-2xl">
+        <motion.div style={{ opacity: contentOpacity, y: contentY }} className="pointer-events-none absolute top-1/2 z-10 flex -translate-y-1/2 flex-col items-center justify-center px-6 text-center">
+          <p className="max-w-5xl bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-lime-300 bg-clip-text font-['Pretendard'] text-xl font-bold leading-snug text-transparent drop-shadow-[0_0_15px_rgba(56,189,248,0.9)] md:text-4xl lg:text-5xl">
             {typedText}
             <span className="ml-1 animate-pulse text-cyan-300">|</span>
           </p>
