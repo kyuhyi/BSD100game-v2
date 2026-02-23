@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1b4b"/>
+      <stop offset="100%" style="stop-color:#312e81"/>
+    </linearGradient>
+    <linearGradient id="platform" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ade80"/>
+      <stop offset="100%" style="stop-color:#22c55e"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="url(#bg)"/>
+  
+  <!-- Platforms at different heights -->
+  <rect x="10" y="160" width="50" height="12" rx="3" fill="url(#platform)" stroke="#16a34a" stroke-width="2"/>
+  <rect x="80" y="130" width="45" height="12" rx="3" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="145" y="95" width="45" height="12" rx="3" fill="url(#platform)" stroke="#16a34a" stroke-width="2"/>
+  
+  <!-- Bounce platform -->
+  <rect x="40" y="85" width="40" height="12" rx="3" fill="#f472b6" stroke="#ec4899" stroke-width="2"/>
+  <polygon points="60,82 50,92 70,92" fill="#ffffff"/>
+  
+  <!-- Goal star -->
+  <circle cx="170" cy="60" r="15" fill="#fbbf24" opacity="0.3">
+    <animate attributeName="r" values="15;20;15" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <text x="170" y="66" text-anchor="middle" font-size="20">⭐</text>
+  
+  <!-- Player jumping -->
+  <g transform="translate(100, 105)">
+    <!-- Body -->
+    <rect x="-10" y="-25" width="20" height="28" rx="3" fill="#3b82f6"/>
+    <!-- Eyes -->
+    <rect x="-6" y="-18" width="4" height="4" fill="#ffffff"/>
+    <rect x="2" y="-18" width="4" height="4" fill="#ffffff"/>
+    <!-- Smile -->
+    <rect x="-4" y="-8" width="8" height="3" fill="#ffffff"/>
+    
+    <!-- Jump motion lines -->
+    <g stroke="#60a5fa" stroke-width="2" opacity="0.6">
+      <line x1="-15" y1="10" x2="-20" y2="20"/>
+      <line x1="0" y1="12" x2="0" y2="25"/>
+      <line x1="15" y1="10" x2="20" y2="20"/>
+    </g>
+    
+    <animateTransform attributeName="transform" type="translate" values="100,105;100,95;100,105" dur="0.6s" repeatCount="indefinite"/>
+  </g>
+  
+  <!-- Arrow path showing jump trajectory -->
+  <path d="M 35,155 Q 60,100 100,105 Q 140,70 165,70" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="5,5" opacity="0.3"/>
+  
+  <!-- Title -->
+  <text x="100" y="188" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="22" font-weight="bold" fill="#4ade80">PARKOUR</text>
+  
+  <!-- Particles -->
+  <g fill="#a78bfa" opacity="0.6">
+    <circle cx="30" cy="40" r="2">
+      <animate attributeName="cy" values="40;30;40" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="150" cy="35" r="2">
+      <animate attributeName="cy" values="35;25;35" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
