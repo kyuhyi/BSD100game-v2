@@ -10,7 +10,7 @@ function YouTubeBanner() {
       href="https://www.youtube.com/@퍼널띵"
       target="_blank"
       rel="noopener noreferrer"
-      className="group col-span-full my-6 block overflow-hidden rounded-2xl border border-red-500/30 bg-gradient-to-r from-red-900/40 via-red-800/30 to-red-900/40 transition-all duration-300 hover:border-red-500/60 hover:shadow-[0_0_40px_rgba(239,68,68,0.2)]"
+      className="group relative my-8 block overflow-hidden rounded-2xl border border-red-500/30 bg-gradient-to-r from-red-900/40 via-red-800/30 to-red-900/40 transition-all duration-300 hover:border-red-500/60 hover:shadow-[0_0_40px_rgba(239,68,68,0.2)]"
     >
       <div className="flex flex-col items-center justify-between gap-4 p-6 sm:flex-row sm:p-8">
         {/* Left - YouTube Icon & Text */}
@@ -153,9 +153,8 @@ export default function GameGrid() {
         </div>
       )}
 
-      {/* Game Grid with YouTube Banner in middle */}
+      {/* First Game Grid - 3 rows */}
       <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-        {/* First section of games */}
         {firstSection.map((game, index) => (
           <GameCard
             key={game.id}
@@ -165,11 +164,13 @@ export default function GameGrid() {
             onLeave={() => setHoveredId(null)}
           />
         ))}
+      </div>
 
-        {/* YouTube Banner - spans full width */}
-        <YouTubeBanner />
+      {/* YouTube Banner - between grids */}
+      <YouTubeBanner />
 
-        {/* Second section of games */}
+      {/* Second Game Grid - remaining games */}
+      <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {secondSection.map((game, index) => (
           <GameCard
             key={game.id}
