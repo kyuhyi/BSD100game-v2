@@ -71,10 +71,8 @@ function StatItem({ value, suffix = "", prefix = "", label, decimals = 0, delay 
       transition={{ duration: 0.6, delay }}
       className="flex flex-col items-center"
     >
-      <div className="text-4xl font-bold text-white md:text-5xl lg:text-6xl">
-        <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-          <Counter end={value} suffix={suffix} prefix={prefix} decimals={decimals} />
-        </span>
+      <div className="text-4xl font-bold text-blue-400 md:text-5xl lg:text-6xl">
+        <Counter end={value} suffix={suffix} prefix={prefix} decimals={decimals} />
       </div>
       <div className="mt-2 text-sm font-medium text-white/70 md:text-base">{label}</div>
     </motion.div>
@@ -83,11 +81,11 @@ function StatItem({ value, suffix = "", prefix = "", label, decimals = 0, delay 
 
 export default function StatsCounter() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#0a0a12] to-[#0f0f1e] py-16 md:py-20">
+    <section className="relative overflow-hidden bg-[#0a0a12] py-16 md:py-20">
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -left-20 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-[100px]" />
-        <div className="absolute -right-20 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-purple-500/10 blur-[100px]" />
+        <div className="absolute -left-20 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-blue-500/10 blur-[100px]" />
+        <div className="absolute -right-20 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-blue-500/10 blur-[100px]" />
       </div>
 
       <div className="relative mx-auto max-w-5xl px-6">
@@ -100,7 +98,7 @@ export default function StatsCounter() {
         >
           <h2 className="text-2xl font-bold text-white md:text-3xl">
             BSD 바이브코딩과 함께한
-            <span className="ml-2 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="ml-2 text-blue-400">
               성장 스토리
             </span>
           </h2>
