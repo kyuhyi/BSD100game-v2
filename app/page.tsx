@@ -10,9 +10,6 @@ export default function Page() {
     <main className="w-full">
       <SiteHeader />
       
-      {/* 상단 광고 */}
-      <TopAd />
-      
       <Demo />
       
       {/* 홍보 배너 */}
