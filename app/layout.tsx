@@ -4,11 +4,33 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "바퍼 재믹스",
-  description: "Scroll Morph Hero Demo",
+  description: "바퍼 재믹스 - 100가지 게임을 하나로! 클래식 아케이드부터 퍼즐까지",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
     apple: "/favicon.ico"
+  },
+  openGraph: {
+    title: "바퍼 재믹스",
+    description: "바퍼 재믹스 - 100가지 게임을 하나로! 클래식 아케이드부터 퍼즐까지",
+    url: "https://bsd100game-v2.vercel.app",
+    siteName: "바퍼 재믹스",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "바퍼 재믹스"
+      }
+    ],
+    locale: "ko_KR",
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "바퍼 재믹스",
+    description: "바퍼 재믹스 - 100가지 게임을 하나로!",
+    images: ["/og-image.png"]
   }
 };
 

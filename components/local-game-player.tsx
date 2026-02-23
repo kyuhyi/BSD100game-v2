@@ -32,6 +32,62 @@ const Breakout3DGame = dynamic(() => import("@/components/games/breakout-3d"), {
   ssr: false,
   loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
 });
+const OrbitalDashGame = dynamic(() => import("@/components/games/orbital-dash"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
+});
+const NeonPongGame = dynamic(() => import("@/components/games/neon-pong"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
+});
+const PrismShooterGame = dynamic(() => import("@/components/games/prism-shooter"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
+});
+const ProverbQuizGame = dynamic(() => import("@/components/games/proverb-quiz"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const ColorRushGameComponent = dynamic(() => import("@/components/games/color-rush"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const SpaceDefenderGame = dynamic(() => import("@/components/games/space-defender"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const MathBlitzGame = dynamic(() => import("@/components/games/math-blitz"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const ReflexMasterGame = dynamic(() => import("@/components/games/reflex-master"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const BeatCatcherGame = dynamic(() => import("@/components/games/beat-catcher"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const EmojiMatchGame = dynamic(() => import("@/components/games/emoji-match"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const WordScrambleGame = dynamic(() => import("@/components/games/word-scramble"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const SimonSaysGame = dynamic(() => import("@/components/games/simon-says"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const TapFrenzyGame = dynamic(() => import("@/components/games/tap-frenzy"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const IframeGame = dynamic(() => import("@/components/games/iframe-game"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
 
 function hash(str: string) {
   let h = 0;
@@ -677,7 +733,9 @@ function RhythmGame({ seed }: { seed: number }) {
   );
 }
 
-function EngineView({ mode, seed }: { mode: GameMode; seed: number }) {
+function EngineView({ game, seed }: { game: GameMeta; seed: number }) {
+  const { mode } = game;
+  if (mode === "iframe" && game.url) return <IframeGame url={game.url} title={game.title} />;
   if (mode === "tetris") return <TetrisGame seed={seed} />;
   if (mode === "omok") return <OmokGame />;
   if (mode === "jigsaw") return <JigsawGame seed={seed} />;
@@ -695,6 +753,19 @@ function EngineView({ mode, seed }: { mode: GameMode; seed: number }) {
   if (mode === "cube-runner") return <CubeRunnerGame />;
   if (mode === "gem-catcher") return <GemCatcherGame />;
   if (mode === "breakout-3d") return <Breakout3DGame />;
+  if (mode === "orbital-dash") return <OrbitalDashGame />;
+  if (mode === "neon-pong") return <NeonPongGame />;
+  if (mode === "prism-shooter") return <PrismShooterGame />;
+  if (mode === "proverb-quiz") return <ProverbQuizGame />;
+  if (mode === "color-rush-game") return <ColorRushGameComponent />;
+  if (mode === "space-defender") return <SpaceDefenderGame />;
+  if (mode === "math-blitz") return <MathBlitzGame />;
+  if (mode === "reflex-master") return <ReflexMasterGame />;
+  if (mode === "beat-catcher") return <BeatCatcherGame />;
+  if (mode === "emoji-match") return <EmojiMatchGame />;
+  if (mode === "word-scramble") return <WordScrambleGame />;
+  if (mode === "simon-says") return <SimonSaysGame />;
+  if (mode === "tap-frenzy") return <TapFrenzyGame />;
   return <div>준비중</div>;
 }
 
@@ -709,7 +780,7 @@ export default function LocalGamePlayer({ game }: { game: GameMeta }) {
           <p className="text-sm text-white/70">{game.description}</p>
         </div>
       </div>
-      <EngineView mode={game.mode} seed={seed} />
+      <EngineView game={game} seed={seed} />
     </section>
   );
 }

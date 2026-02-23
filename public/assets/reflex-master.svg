@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#064e3b"/>
+      <stop offset="100%" style="stop-color:#022c22"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="100" height="100" fill="url(#bg)"/>
+  <circle cx="50" cy="50" r="30" fill="#22c55e" filter="url(#glow)"/>
+  <circle cx="50" cy="50" r="20" fill="#4ade80"/>
+  <text x="50" y="55" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">클릭!</text>
+  <text x="50" y="90" text-anchor="middle" fill="#86efac" font-size="10">⚡ 반응속도</text>
+  <text x="50" y="18" text-anchor="middle" fill="#fbbf24" font-size="10">235ms</text>
+</svg>

@@ -105,5 +105,14 @@ window.GAME_REGISTRY = [
   {"id":"helix-jump","title":"헬릭스 점프","description":"나선 플랫폼의 틈새로 공을 떨어뜨리는 3D 게임","category":"arcade","thumbnail":"/assets/helix-jump.svg","new":true},
   {"id":"cube-runner","title":"큐브 러너","description":"3D 트랙 위 큐브로 장애물을 피하는 러닝 게임","category":"action","thumbnail":"/assets/cube-runner.svg","new":true},
   {"id":"gem-catcher","title":"젬 캐처","description":"하늘에서 떨어지는 3D 보석을 바구니로 받는 게임","category":"casual","thumbnail":"/assets/gem-catcher.svg","new":true},
-  {"id":"breakout-3d","title":"3D 벽돌깨기","description":"클래식 벽돌깨기를 3D로 즐기는 아케이드 게임","category":"arcade","thumbnail":"/assets/breakout-3d.svg","new":true}
+  {"id":"breakout-3d","title":"3D 벽돌깨기","description":"클래식 벽돌깨기를 3D로 즐기는 아케이드 게임","category":"arcade","thumbnail":"/assets/breakout-3d.svg","new":true},
+  {"id":"flappy-bird","title":"플래피 버드","description":"클릭으로 새를 조종해 파이프를 통과하세요!","category":"arcade","thumbnail":"/assets/flappy-bird.svg","new":true,"hot":true},
+  {"id":"rocket-jump","title":"로켓 점프","description":"운석을 피하며 우주를 날아가는 아케이드 게임!","category":"arcade","thumbnail":"/assets/rocket-jump.svg","new":true},
+  {"id":"balloon-fly","title":"풍선 플라이","description":"별을 모으고 가시를 피하는 풍선 게임!","category":"casual","thumbnail":"/assets/balloon-fly.svg","new":true},
+  {"id":"dino-runner","title":"점프 러너","description":"장애물을 점프로 피해 달려가는 러닝 게임!","category":"action","thumbnail":"/assets/dino-runner.svg","new":true},
+  {"id":"pacman-classic","title":"팩맨","description":"점을 먹고 유령을 피하는 클래식 아케이드!","category":"arcade","thumbnail":"/assets/pacman.svg","new":true,"hot":true},
+  {"id":"bubble-bobble","title":"보글보글","description":"버블로 적을 가두고 터뜨리는 클래식 게임!","category":"arcade","thumbnail":"/assets/bubble-bobble.svg","new":true,"hot":true},
+  {"id":"snow-bros","title":"스노우볼","description":"눈으로 적을 얼리고 굴려버리는 아케이드!","category":"arcade","thumbnail":"/assets/snow-bros.svg","new":true,"hot":true},
+  {"id":"minesweeper","title":"지뢰찾기","description":"지뢰를 피해 모든 칸을 열어라!","category":"puzzle","thumbnail":"/assets/minesweeper.svg","new":true},
+  {"id":"ladder","title":"사다리 게임","description":"참여자와 결과를 설정하고 사다리를 타는 랜덤 추첨 게임!","category":"casual","thumbnail":"/assets/ladder.svg","new":true,"hot":true,"external":"/ladder.html"}
 ];

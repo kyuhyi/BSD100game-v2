@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#c0c0c0"/>
+  <rect x="10" y="10" width="25" height="25" fill="#d0d0d0" stroke="#808080"/>
+  <rect x="37" y="10" width="25" height="25" fill="#d0d0d0" stroke="#808080"/>
+  <rect x="64" y="10" width="25" height="25" fill="#d0d0d0" stroke="#808080"/>
+  <rect x="10" y="37" width="25" height="25" fill="#d0d0d0" stroke="#808080"/>
+  <rect x="37" y="37" width="25" height="25" fill="#d0d0d0" stroke="#808080"/>
+  <rect x="64" y="37" width="25" height="25" fill="#d0d0d0" stroke="#808080"/>
+  <rect x="10" y="64" width="25" height="25" fill="#d0d0d0" stroke="#808080"/>
+  <rect x="37" y="64" width="25" height="25" fill="#d0d0d0" stroke="#808080"/>
+  <rect x="64" y="64" width="25" height="25" fill="#ff0000"/>
+  <circle cx="76" cy="76" r="8" fill="#000"/>
+  <text x="22" y="28" font-size="16" fill="#0000ff" text-anchor="middle">1</text>
+  <text x="49" y="28" font-size="16" fill="#008000" text-anchor="middle">2</text>
+  <text x="22" y="82" font-size="14" fill="#ff0000" text-anchor="middle">🚩</text>
+</svg>
