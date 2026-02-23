@@ -211,7 +211,7 @@ export default function IntroAnimation() {
   }, [typedText, isDeleting, lineIndex]);
 
   return (
-    <div ref={containerRef} className="relative h-full w-full overflow-hidden bg-white/10">
+    <div ref={containerRef} className="relative h-full w-full overflow-hidden bg-black/80">
       <div className="flex h-full w-full flex-col items-center justify-center [perspective:1000px]">
         <div className="pointer-events-none absolute top-1/2 z-0 flex -translate-y-1/2 flex-col items-center justify-center text-center">
           <motion.h1
