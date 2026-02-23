@@ -104,6 +104,10 @@ const ObstacleRaceGame = dynamic(() => import("@/components/games/obstacle-race"
   ssr: false,
   loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
 });
+const BalloonArcherGame = dynamic(() => import("@/components/games/balloon-archer"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">3D 로딩중...</div>,
+});
 const IframeGame = dynamic(() => import("@/components/games/iframe-game"), {
   ssr: false,
   loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
@@ -791,6 +795,7 @@ function EngineView({ game, seed }: { game: GameMeta; seed: number }) {
   if (mode === "parkour") return <ParkourGame />;
   if (mode === "target-shooter") return <TargetShooterGame />;
   if (mode === "obstacle-race") return <ObstacleRaceGame />;
+  if (mode === "balloon-archer") return <BalloonArcherGame />;
   return <div>준비중</div>;
 }
 

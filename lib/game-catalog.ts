@@ -34,6 +34,7 @@ export type GameMode =
   | "parkour"
   | "target-shooter"
   | "obstacle-race"
+  | "balloon-archer"
   | "iframe";
 
 export type GameMeta = {
@@ -74,6 +75,7 @@ export const GAMES: GameMeta[] = [
   { id: "parkour", title: "파쿠르", thumbnail: "/assets/parkour.svg", description: "플랫폼을 점프해서 건너라! 더블점프 가능!", mode: "parkour" },
   { id: "target-shooter", title: "타겟 슈팅", thumbnail: "/assets/target-shooter.svg", description: "움직이는 타겟을 조준해서 맞추는 슈팅 게임!", mode: "target-shooter" },
   { id: "obstacle-race", title: "장애물 레이스", thumbnail: "/assets/obstacle-race.svg", description: "장애물을 피해 달리고 코인을 모아라!", mode: "obstacle-race" },
+  { id: "balloon-archer", title: "풍선 사냥꾼", thumbnail: "/assets/balloon-archer.svg", description: "화살로 떠다니는 풍선을 터뜨리는 3D 슈팅 게임!", mode: "balloon-archer" },
   // 새로 추가된 게임들 (iframe)
   { id: "flappy-bird", title: "플래피 버드", thumbnail: "/assets/flappy-bird.svg", description: "클릭으로 새를 조종해 파이프를 통과하세요!", mode: "iframe", url: "https://bird-game-two.vercel.app" },
   { id: "rocket-jump", title: "로켓 점프", thumbnail: "/assets/rocket-jump.svg", description: "운석을 피하며 우주를 날아가세요!", mode: "iframe", url: "https://rocket-game-nine.vercel.app" },
