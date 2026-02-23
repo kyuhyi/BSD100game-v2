@@ -29,10 +29,9 @@ const PLAYER_HEIGHT = 32;
 const GRAVITY = 0.5;
 const JUMP_FORCE = -11;
 const MOVE_SPEED = 5;
-const AIR_CONTROL = 0.3; // 공중에서 이동 속도 제한
+const AIR_CONTROL = 0.3;
 const MAX_JUMPS = 2;
 
-// Level definitions - 쉬운 난이도
 const LEVELS: { platforms: Omit<Platform, "originalX">[]; goal: { x: number; y: number } }[] = [
   {
     platforms: [
@@ -89,22 +88,33 @@ export default function ParkourGame() {
   const [level, setLevel] = useState(1);
   const [deaths, setDeaths] = useState(0);
   const [timer, setTimer] = useState(0);
-  const [isDead, setIsDead] = useState(false);
+  const [restartKey, setRestartKey] = useState(0); // 강제 리렌더링용
   
-  const playerRef = useRef<Player>({ x: 50, y: 300, vx: 0, vy: 0, onGround: false, jumpCount: 0 });
+  const playerRef = useRef<Player>({ x: 60, y: 280, vx: 0, vy: 0, onGround: false, jumpCount: 0 });
   const platformsRef = useRef<Platform[]>([]);
   const keysRef = useRef<Set<string>>(new Set());
-  const animationRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
   const fragilePlatformsRef = useRef<Map<number, number>>(new Map());
-  const gameStateRef = useRef<"ready" | "playing" | "win">("ready");
 
-  // Sync ref with state
-  useEffect(() => {
-    gameStateRef.current = gameState;
-  }, [gameState]);
+  const createPlatforms = useCallback((levelNum: number) => {
+    const levelData = LEVELS[levelNum - 1];
+    if (!levelData) return [];
+    return levelData.platforms.map(p => ({
+      ...p,
+      originalX: p.x,
+    }));
+  }, []);
 
-  const resetPlayer = useCallback(() => {
+  const startGame = useCallback((levelNum: number, resetTimer: boolean = false) => {
+    if (levelNum > LEVELS.length) {
+      setGameState("win");
+      return;
+    }
+    
+    // 플랫폼 새로 생성
+    platformsRef.current = createPlatforms(levelNum);
+    
+    // 플레이어 리셋
     playerRef.current = {
       x: 60,
       y: 280,
@@ -113,49 +123,26 @@ export default function ParkourGame() {
       onGround: false,
       jumpCount: 0,
     };
-  }, []);
-
-  const initLevel = useCallback((levelNum: number, resetTimer: boolean = false) => {
-    console.log("initLevel called:", levelNum);
     
-    if (levelNum > LEVELS.length) {
-      setGameState("win");
-      return;
-    }
-    
-    const levelData = LEVELS[levelNum - 1];
-    if (!levelData) {
-      setGameState("win");
-      return;
-    }
-    
-    // Initialize platforms
-    platformsRef.current = levelData.platforms.map(p => ({
-      ...p,
-      originalX: p.x,
-    }));
-    
-    // Reset player
-    resetPlayer();
-    
-    // Clear fragile platforms
+    // 부서지는 플랫폼 리셋
     fragilePlatformsRef.current.clear();
     
-    // Clear keys
+    // 키 상태 리셋
     keysRef.current.clear();
     
     setLevel(levelNum);
-    setIsDead(false);
     
     if (resetTimer) {
       startTimeRef.current = Date.now();
       setDeaths(0);
     }
     
+    // 강제 리렌더링으로 useEffect 재실행
+    setRestartKey(k => k + 1);
     setGameState("playing");
-  }, [resetPlayer]);
+  }, [createPlatforms]);
 
-  // Game loop
+  // Game loop - restartKey 의존성 추가
   useEffect(() => {
     if (gameState !== "playing") return;
 
@@ -167,56 +154,51 @@ export default function ParkourGame() {
     const levelData = LEVELS[level - 1];
     if (!levelData) return;
 
-    let running = true;
+    let animationId: number;
+    let dead = false;
 
     const gameLoop = () => {
-      if (!running || gameStateRef.current !== "playing") return;
+      if (dead) return;
       
       const player = playerRef.current;
       const platforms = platformsRef.current;
       const now = Date.now();
       
-      // Update timer
       setTimer(Math.floor((now - startTimeRef.current) / 1000));
       
-      // Handle input - 공중에서는 이동 속도 제한
+      // Input
       const inputX = (keysRef.current.has("arrowleft") || keysRef.current.has("a") ? -1 : 0) +
                      (keysRef.current.has("arrowright") || keysRef.current.has("d") ? 1 : 0);
       
       if (player.onGround) {
         player.vx = inputX * MOVE_SPEED;
       } else {
-        // 공중에서는 현재 속도에서 조금만 조정 (에어 컨트롤)
         player.vx += inputX * AIR_CONTROL;
-        // 최대 속도 제한
         player.vx = Math.max(-MOVE_SPEED, Math.min(MOVE_SPEED, player.vx));
-        // 마찰
         player.vx *= 0.98;
       }
       
-      // Apply gravity
       player.vy += GRAVITY;
       if (player.vy > 15) player.vy = 15;
       
-      // Update position
       player.x += player.vx;
       player.y += player.vy;
       
-      // Update moving platforms
+      // Moving platforms
       platforms.forEach(p => {
         if (p.type === "moving" && p.moveRange && p.moveSpeed && p.originalX !== undefined) {
           p.x = p.originalX + Math.sin(now / 1000 * p.moveSpeed) * p.moveRange;
         }
       });
       
-      // Check fragile platforms
+      // Fragile platforms
       fragilePlatformsRef.current.forEach((breakTime, idx) => {
         if (now >= breakTime && platforms[idx]) {
           platforms[idx].y = 9999;
         }
       });
       
-      // Platform collision
+      // Collision
       player.onGround = false;
       platforms.forEach((p, idx) => {
         if (p.y > CANVAS_HEIGHT) return;
@@ -230,7 +212,7 @@ export default function ParkourGame() {
         ) {
           player.y = p.y - PLAYER_HEIGHT;
           player.vy = 0;
-          player.vx = 0; // 착지하면 속도 리셋
+          player.vx = 0;
           player.onGround = true;
           player.jumpCount = 0;
           
@@ -245,34 +227,28 @@ export default function ParkourGame() {
         }
       });
       
-      // Boundary check
       player.x = Math.max(PLAYER_WIDTH / 2, Math.min(CANVAS_WIDTH - PLAYER_WIDTH / 2, player.x));
       
-      // Death check
+      // Death
       if (player.y > CANVAS_HEIGHT + 50) {
-        running = false;
-        setIsDead(true);
+        dead = true;
         setDeaths(d => d + 1);
-        
-        // 1초 후 재시작
         setTimeout(() => {
-          if (gameStateRef.current === "playing") {
-            initLevel(level, false);
-          }
-        }, 800);
+          startGame(level, false);
+        }, 500);
         return;
       }
       
-      // Goal check
+      // Goal
       const goal = levelData.goal;
       if (Math.abs(player.x - goal.x) < 35 && Math.abs(player.y - goal.y) < 45) {
-        running = false;
+        dead = true;
         if (level >= LEVELS.length) {
           setGameState("win");
         } else {
           setTimeout(() => {
-            initLevel(level + 1, false);
-          }, 500);
+            startGame(level + 1, false);
+          }, 300);
         }
         return;
       }
@@ -284,11 +260,10 @@ export default function ParkourGame() {
       ctx.fillStyle = bgGradient;
       ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
       
-      // Death zone
       ctx.fillStyle = "rgba(239, 68, 68, 0.1)";
       ctx.fillRect(0, CANVAS_HEIGHT - 30, CANVAS_WIDTH, 30);
       
-      // Draw platforms
+      // Platforms
       platforms.forEach((p, idx) => {
         if (p.y > CANVAS_HEIGHT) return;
         
@@ -305,9 +280,7 @@ export default function ParkourGame() {
           const isBreaking = fragilePlatformsRef.current.has(idx);
           color = isBreaking ? "#ef4444" : "#94a3b8";
           borderColor = isBreaking ? "#dc2626" : "#64748b";
-          if (isBreaking) {
-            ctx.globalAlpha = 0.5 + Math.sin(now / 30) * 0.5;
-          }
+          if (isBreaking) ctx.globalAlpha = 0.5 + Math.sin(now / 30) * 0.5;
         }
         
         ctx.fillStyle = color;
@@ -327,7 +300,7 @@ export default function ParkourGame() {
         }
       });
       
-      // Draw goal
+      // Goal
       ctx.fillStyle = "#fbbf24";
       ctx.shadowColor = "#fbbf24";
       ctx.shadowBlur = 20;
@@ -340,13 +313,12 @@ export default function ParkourGame() {
       ctx.fillText("⭐", goal.x, goal.y + 7);
       ctx.shadowBlur = 0;
       
-      // Draw player
+      // Player
       ctx.fillStyle = "#3b82f6";
       ctx.shadowColor = "#3b82f6";
       ctx.shadowBlur = 10;
       ctx.fillRect(player.x - PLAYER_WIDTH / 2, player.y, PLAYER_WIDTH, PLAYER_HEIGHT);
       ctx.shadowBlur = 0;
-      
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(player.x - 6, player.y + 8, 4, 4);
       ctx.fillRect(player.x + 2, player.y + 8, 4, 4);
@@ -358,38 +330,18 @@ export default function ParkourGame() {
       ctx.textAlign = "left";
       ctx.fillText(`Level ${level}/${LEVELS.length}`, 10, 28);
       
-      ctx.font = "12px sans-serif";
-      ctx.fillStyle = "#4ade80";
-      ctx.fillText("●", 10, 50);
-      ctx.fillStyle = "#ffffff80";
-      ctx.fillText(" 일반", 22, 50);
-      ctx.fillStyle = "#fbbf24";
-      ctx.fillText("●", 60, 50);
-      ctx.fillStyle = "#ffffff80";
-      ctx.fillText(" 이동", 72, 50);
-      ctx.fillStyle = "#f472b6";
-      ctx.fillText("●", 110, 50);
-      ctx.fillStyle = "#ffffff80";
-      ctx.fillText(" 점프", 122, 50);
-      ctx.fillStyle = "#94a3b8";
-      ctx.fillText("●", 160, 50);
-      ctx.fillStyle = "#ffffff80";
-      ctx.fillText(" 부서짐", 172, 50);
-      
-      animationRef.current = requestAnimationFrame(gameLoop);
+      animationId = requestAnimationFrame(gameLoop);
     };
 
-    animationRef.current = requestAnimationFrame(gameLoop);
+    animationId = requestAnimationFrame(gameLoop);
 
     return () => {
-      running = false;
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      dead = true;
+      cancelAnimationFrame(animationId);
     };
-  }, [gameState, level, initLevel]);
+  }, [gameState, level, restartKey, startGame]);
 
-  // Keyboard controls
+  // Keyboard
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
@@ -397,20 +349,20 @@ export default function ParkourGame() {
         e.preventDefault();
         keysRef.current.add(key);
         
-        if ((key === "arrowup" || key === "w" || key === " ") && gameStateRef.current === "playing" && !isDead) {
+        if ((key === "arrowup" || key === "w" || key === " ") && gameState === "playing") {
           const player = playerRef.current;
           if (player.jumpCount < MAX_JUMPS) {
             player.vy = JUMP_FORCE;
-            player.vx *= 0.5; // 점프할 때 수평 속도 줄이기
+            player.vx *= 0.5;
             player.jumpCount++;
             player.onGround = false;
           }
         }
       }
       
-      if (key === "r" && gameStateRef.current === "playing") {
+      if (key === "r" && gameState === "playing") {
         setDeaths(d => d + 1);
-        initLevel(level, false);
+        startGame(level, false);
       }
     };
     
@@ -420,15 +372,14 @@ export default function ParkourGame() {
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
-    
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [level, initLevel, isDead]);
+  }, [gameState, level, startGame]);
 
   const handleJump = () => {
-    if (gameStateRef.current !== "playing" || isDead) return;
+    if (gameState !== "playing") return;
     const player = playerRef.current;
     if (player.jumpCount < MAX_JUMPS) {
       player.vy = JUMP_FORCE;
@@ -454,12 +405,6 @@ export default function ParkourGame() {
           className="rounded-xl border-2 border-white/20"
         />
         
-        {isDead && gameState === "playing" && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-xl">
-            <p className="text-2xl font-bold text-red-500 animate-pulse">💀 다시 시도...</p>
-          </div>
-        )}
-        
         {gameState === "ready" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 rounded-xl">
             <h2 className="text-3xl font-bold text-white mb-4">🏃 Parkour</h2>
@@ -467,7 +412,7 @@ export default function ParkourGame() {
             <p className="text-white/70 mb-1 text-sm">🟢일반 🟡이동 ⬜부서짐 🩷점프대</p>
             <p className="text-cyan-400 mb-6">✨ 더블 점프 가능!</p>
             <button
-              onClick={() => initLevel(1, true)}
+              onClick={() => startGame(1, true)}
               className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold rounded-full hover:scale-105 transition-transform"
             >
               게임 시작
@@ -482,7 +427,7 @@ export default function ParkourGame() {
             <p className="text-xl text-white mb-2">클리어 시간: <span className="text-cyan-400">{timer}초</span></p>
             <p className="text-lg text-white mb-6">사망 횟수: <span className="text-red-400">{deaths}회</span></p>
             <button
-              onClick={() => initLevel(1, true)}
+              onClick={() => startGame(1, true)}
               className="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold rounded-full hover:scale-105 transition-transform"
             >
               다시 도전
@@ -491,28 +436,21 @@ export default function ParkourGame() {
         )}
       </div>
       
-      {/* Mobile controls */}
       <div className="flex gap-4 md:hidden mt-4">
         <button
           className="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center text-2xl active:bg-white/20"
           onTouchStart={() => keysRef.current.add("a")}
           onTouchEnd={() => keysRef.current.delete("a")}
-        >
-          ⬅️
-        </button>
+        >⬅️</button>
         <button
           className="w-20 h-16 bg-green-500/30 rounded-xl flex items-center justify-center text-2xl active:bg-green-500/50"
           onTouchStart={handleJump}
-        >
-          ⬆️
-        </button>
+        >⬆️</button>
         <button
           className="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center text-2xl active:bg-white/20"
           onTouchStart={() => keysRef.current.add("d")}
           onTouchEnd={() => keysRef.current.delete("d")}
-        >
-          ➡️
-        </button>
+        >➡️</button>
       </div>
     </div>
   );
