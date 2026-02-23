@@ -10,43 +10,13 @@ function YouTubeBanner() {
       href="https://www.youtube.com/@퍼널띵"
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative my-8 block overflow-hidden rounded-2xl border border-red-500/30 bg-gradient-to-r from-red-900/40 via-red-800/30 to-red-900/40 transition-all duration-300 hover:border-red-500/60 hover:shadow-[0_0_40px_rgba(239,68,68,0.2)]"
+      className="group relative my-8 block overflow-hidden rounded-2xl transition-all duration-300 hover:shadow-[0_0_40px_rgba(239,68,68,0.3)]"
     >
-      <div className="flex flex-col items-center justify-between gap-4 p-6 sm:flex-row sm:p-8">
-        {/* Left - YouTube Icon & Text */}
-        <div className="flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-600 shadow-lg shadow-red-600/30 transition-transform duration-300 group-hover:scale-110">
-            <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-xl font-bold text-white sm:text-2xl">
-              퍼널띵 유튜브
-            </h3>
-            <p className="mt-1 text-sm text-white/60">
-              바이브코딩 & AI 자동화 강의 채널
-            </p>
-          </div>
-        </div>
-
-        {/* Right - Subscribe Button */}
-        <div className="flex items-center gap-3">
-          <div className="hidden items-center gap-2 text-white/50 sm:flex">
-            <span className="text-2xl">🎬</span>
-            <span className="text-sm">무료 강의 영상</span>
-          </div>
-          <div className="rounded-full bg-red-600 px-6 py-2.5 font-bold text-white shadow-lg shadow-red-600/30 transition-all duration-300 group-hover:bg-red-500 group-hover:shadow-red-500/40">
-            구독하기 →
-          </div>
-        </div>
-      </div>
-
-      {/* Animated background */}
-      <div className="pointer-events-none absolute inset-0 opacity-30">
-        <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-red-500 blur-[80px] transition-all duration-500 group-hover:bg-red-400" />
-        <div className="absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-red-600 blur-[80px] transition-all duration-500 group-hover:bg-red-500" />
-      </div>
+      <img 
+        src="/youtube.gif" 
+        alt="퍼널띵 유튜브 채널" 
+        className="w-full h-auto rounded-2xl transition-transform duration-300 group-hover:scale-[1.02]"
+      />
     </a>
   );
 }
