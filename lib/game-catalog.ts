@@ -35,6 +35,9 @@ export type GameMode =
   | "target-shooter"
   | "obstacle-race"
   | "balloon-archer"
+  | "galaga"
+  | "snake-3d"
+  | "piano-tiles"
   | "iframe";
 
 export type GameMeta = {
@@ -85,6 +88,10 @@ export const GAMES: GameMeta[] = [
   { id: "bubble-bobble", title: "보글보글", thumbnail: "/assets/bubble-bobble.svg", description: "버블로 적을 가두고 터뜨리세요!", mode: "iframe", url: "https://bubble-game-virid-ten.vercel.app" },
   { id: "snow-bros", title: "스노우볼", thumbnail: "/assets/snow-bros.svg", description: "눈으로 적을 얼리고 굴려버리세요!", mode: "iframe", url: "https://snow-game.vercel.app" },
   { id: "minesweeper", title: "지뢰찾기", thumbnail: "/assets/minesweeper.svg", description: "지뢰를 피해 모든 칸을 열어라!", mode: "iframe", url: "https://minesweeper-game-theta.vercel.app" },
+  // 신규 게임 (애니메이션 볼거리)
+  { id: "galaga", title: "갤러그", thumbnail: "/assets/galaga.svg", description: "적기 편대를 격추하는 클래식 우주 슈팅!", mode: "galaga" },
+  { id: "snake-3d", title: "스네이크 3D", thumbnail: "/assets/snake-3d.svg", description: "먹이를 먹고 점점 길어지는 3D 뱀 게임!", mode: "snake-3d" },
+  { id: "piano-tiles", title: "피아노 타일", thumbnail: "/assets/piano-tiles.svg", description: "떨어지는 검은 타일만 터치하는 리듬 게임!", mode: "piano-tiles" },
 ];
 
 export const THUMBNAILS = GAMES.map((g) => g.thumbnail);

@@ -112,6 +112,18 @@ const IframeGame = dynamic(() => import("@/components/games/iframe-game"), {
   ssr: false,
   loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
 });
+const GalagaGame = dynamic(() => import("@/components/games/galaga"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const Snake3DGame = dynamic(() => import("@/components/games/snake-3d"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
+const PianoTilesGame = dynamic(() => import("@/components/games/piano-tiles"), {
+  ssr: false,
+  loading: () => <div className="flex h-96 items-center justify-center text-white/50">로딩중...</div>,
+});
 
 function hash(str: string) {
   let h = 0;
@@ -796,6 +808,9 @@ function EngineView({ game, seed }: { game: GameMeta; seed: number }) {
   if (mode === "target-shooter") return <TargetShooterGame />;
   if (mode === "obstacle-race") return <ObstacleRaceGame />;
   if (mode === "balloon-archer") return <BalloonArcherGame />;
+  if (mode === "galaga") return <GalagaGame />;
+  if (mode === "snake-3d") return <Snake3DGame />;
+  if (mode === "piano-tiles") return <PianoTilesGame />;
   return <div>준비중</div>;
 }
 
