@@ -1,0 +1,691 @@
+{
+  "name": "n8n Error Recovery Agent (Self-Healing)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "error-trigger-001",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $env.GOOGLE_SHEET_ID }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ $now.toISO() }}",
+            "workflow_id": "={{ $json.workflow.id }}",
+            "workflow_name": "={{ $json.workflow.name }}",
+            "execution_id": "={{ $json.execution.id }}",
+            "error_node": "={{ $json.execution.error.node.name }}",
+            "error_message": "={{ $json.execution.error.message }}",
+            "status": "processing"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "workflow_name",
+              "displayName": "workflow_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "execution_id",
+              "displayName": "execution_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_node",
+              "displayName": "error_node",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "google-sheets-001",
+      "name": "Append row in sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        60,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-filter-001",
+              "leftValue": "={{ $('Error Trigger').item.json.execution.error.message }}",
+              "rightValue": "self-healing",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "condition-filter-002",
+              "leftValue": "={{ $('Error Trigger').item.json.execution.retryOf }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-node-001",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        300,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=너는 n8n 워크플로우 자동화 전문가 AI 에이전트야. 네 역할은 n8n 워크플로우에서 에러가 발생했을 때 스스로 문제를 분석하고 수정하는 것이야.\n\n## 에러 컨텍스트\n- 워크플로우 ID: {{ $('Error Trigger').item.json.workflow.id }}\n- 워크플로우 이름: {{ $('Error Trigger').item.json.workflow.name }}\n- 실행 ID: {{ $('Error Trigger').item.json.execution.id }}\n- 에러 발생 노드: {{ $('Error Trigger').item.json.execution.error.node.name }}\n- 에러 메시지: {{ $('Error Trigger').item.json.execution.error.message }}\n- 에러 타입: {{ $('Error Trigger').item.json.execution.error.node.type }}\n\n## 문제 해결 프로세스 (반드시 이 순서를 따라)\n\n### 1단계: 워크플로우 구조 분석\n- `getWorkflow` 도구를 사용하여 현재 워크플로우의 전체 JSON 구조를 가져와.\n- 에러가 발생한 노드의 설정(parameters)을 자세히 분석해.\n- 노드 간의 연결(connections)을 확인해.\n\n### 2단계: 에러 원인 진단\n- `getExecution` 도구로 실행 세부 로그를 확인해.\n- 에러 메시지를 기반으로 원인을 파악해.\n- 일반적인 원인: 잘못된 파라미터, API 키 만료, URL 오류, 데이터 형식 불일치 등.\n\n### 3단계: 해결책 검색 (필요시)\n- 에러 원인을 자체적으로 파악하기 어려운 경우, `webSearch` 도구를 사용해.\n- 검색 쿼리 예시: \"n8n [에러메시지] solution\", \"n8n [노드타입] configuration error fix\"\n\n### 4단계: 노드 수정\n- `updateNodeParam` 도구를 사용하여 에러가 난 노드의 파라미터를 수정해.\n- 수정 시 기존 설정을 최대한 유지하면서 문제가 되는 부분만 변경해.\n- 주의: 워크플로우 전체 구조를 깨뜨리지 않도록 조심해.\n\n### 5단계: 재실행\n- `retryExecution` 도구로 수정된 워크플로우를 다시 실행해.\n- 재실행 결과를 확인하고 성공/실패 여부를 판단해.\n\n## 중요 규칙\n1. 최대 5번까지만 수정을 시도해. 5번 실패하면 사람에게 에스컬레이션해.\n2. 수정 전에 반드시 현재 상태를 분석해. 무작정 수정하지 마.\n3. 에러 복구 워크플로우 자체(이 워크플로우)의 에러는 절대 수정하지 마. 무한 루프 방지.\n4. 최종 결과를 명확하게 보고해: 어떤 에러가 있었고, 무엇을 수정했고, 결과가 어떻게 됐는지.\n5. 민감한 정보(API 키, 비밀번호 등)는 로그에 남기지 마.",
+          "maxIterations": 5
+        },
+        "promptType": "define",
+        "text": "=에러가 발생했습니다. 아래 정보를 분석하고 자동으로 복구해주세요.\n\n에러 발생 워크플로우: {{ $('Error Trigger').item.json.workflow.name }} (ID: {{ $('Error Trigger').item.json.workflow.id }})\n실행 ID: {{ $('Error Trigger').item.json.execution.id }}\n에러 노드: {{ $('Error Trigger').item.json.execution.error.node.name }} (타입: {{ $('Error Trigger').item.json.execution.error.node.type }})\n에러 메시지: {{ $('Error Trigger').item.json.execution.error.message }}\n\n위 에러를 분석하고, 가능하다면 자동으로 수정 후 재실행해주세요."
+      },
+      "id": "ai-agent-001",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        580,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": "claude-sonnet-4-6-20250514",
+        "options": {
+          "maxTokensToSample": 4096,
+          "temperature": 0.3
+        }
+      },
+      "id": "anthropic-model-001",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        520
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": "ANTHROPIC_CREDENTIAL_ID",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Error Trigger').item.json.execution.id }}",
+        "contextWindowLength": 10
+      },
+      "id": "memory-001",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        580,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "name": "getWorkflow",
+        "description": "현재 에러가 발생한 워크플로우의 전체 JSON 구조를 가져옵니다. 워크플로우의 노드 구성, 파라미터, 연결 정보를 분석할 때 사용합니다.",
+        "method": "GET",
+        "url": "={{ $env.N8N_BASE_URL || 'https://bsd.ai.kr' }}/api/v1/workflows/{{ $('Error Trigger').item.json.workflow.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "tool-get-workflow-001",
+      "name": "getWorkflow",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        260,
+        700
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "N8N_API_CREDENTIAL_ID",
+          "name": "n8n API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "updateNodeParam",
+        "description": "워크플로우 내 특정 노드의 파라미터를 수정합니다. 에러가 발생한 노드의 설정을 변경할 때 사용합니다. body에 수정할 워크플로우 JSON을 포함해야 합니다.",
+        "method": "PUT",
+        "url": "={{ $env.N8N_BASE_URL || 'https://bsd.ai.kr' }}/api/v1/workflows/{{ $('Error Trigger').item.json.workflow.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "tool-update-node-001",
+      "name": "updateNodeParam",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        420,
+        700
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "N8N_API_CREDENTIAL_ID",
+          "name": "n8n API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "listWorkflows",
+        "description": "n8n 인스턴스에 등록된 모든 워크플로우 목록을 조회합니다. 관련 워크플로우를 확인하거나 참조할 때 사용합니다.",
+        "method": "GET",
+        "url": "={{ $env.N8N_BASE_URL || 'https://bsd.ai.kr' }}/api/v1/workflows",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "tool-list-workflows-001",
+      "name": "listWorkflows",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        700
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "N8N_API_CREDENTIAL_ID",
+          "name": "n8n API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "getExecution",
+        "description": "특정 실행의 세부 정보를 조회합니다. 에러가 발생한 실행의 상세 로그, 각 노드별 입출력 데이터를 확인할 때 사용합니다.",
+        "method": "GET",
+        "url": "={{ $env.N8N_BASE_URL || 'https://bsd.ai.kr' }}/api/v1/executions/{{ $('Error Trigger').item.json.execution.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "tool-get-execution-001",
+      "name": "getExecution",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        740,
+        700
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "N8N_API_CREDENTIAL_ID",
+          "name": "n8n API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "retryExecution",
+        "description": "에러가 발생한 실행을 다시 시도합니다. 노드 파라미터를 수정한 후 재실행할 때 사용합니다.",
+        "method": "POST",
+        "url": "={{ $env.N8N_BASE_URL || 'https://bsd.ai.kr' }}/api/v1/executions/{{ $('Error Trigger').item.json.execution.id }}/retry",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "tool-retry-execution-001",
+      "name": "retryExecution",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        900,
+        700
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "N8N_API_CREDENTIAL_ID",
+          "name": "n8n API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "webSearch",
+        "description": "에러 메시지나 문제에 대한 해결책을 웹에서 검색합니다. Tavily AI Search API를 사용하여 n8n 관련 에러 해결 방법을 찾습니다.",
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{query}\",\n  \"search_depth\": \"advanced\",\n  \"include_answer\": true,\n  \"max_results\": 5\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "tool-web-search-001",
+      "name": "webSearch",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1060,
+        700
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "TAVILY_API_CREDENTIAL_ID",
+          "name": "Tavily API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "=🔧 **n8n 에러 자동 복구 결과**\n\n📋 **워크플로우:** {{ $('Error Trigger').item.json.workflow.name }}\n🆔 **실행 ID:** {{ $('Error Trigger').item.json.execution.id }}\n⚠️ **에러 노드:** {{ $('Error Trigger').item.json.execution.error.node.name }}\n💬 **에러 메시지:** {{ $('Error Trigger').item.json.execution.error.message }}\n\n🤖 **AI 에이전트 처리 결과:**\n{{ $('AI Agent').item.json.output }}\n\n⏰ {{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "telegram-001",
+      "name": "Send a text message",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        900,
+        200
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "TELEGRAM_CREDENTIAL_ID",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $env.SLACK_CHANNEL_ID }}"
+        },
+        "text": "=:wrench: *n8n 에러 자동 복구 결과*\n\n:clipboard: *워크플로우:* {{ $('Error Trigger').item.json.workflow.name }}\n:id: *실행 ID:* {{ $('Error Trigger').item.json.execution.id }}\n:warning: *에러 노드:* {{ $('Error Trigger').item.json.execution.error.node.name }}\n:speech_balloon: *에러 메시지:* {{ $('Error Trigger').item.json.execution.error.message }}\n\n:robot_face: *AI 에이전트 처리 결과:*\n{{ $('AI Agent').item.json.output }}\n\n:clock3: {{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+        "otherOptions": {}
+      },
+      "id": "slack-001",
+      "name": "Send a message",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        900,
+        420
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "SLACK_CREDENTIAL_ID",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getWorkflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "updateNodeParam": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "listWorkflows": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getExecution": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "retryExecution": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "webSearch": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "AI Agent",
+      "id": "1"
+    },
+    {
+      "name": "Error Recovery",
+      "id": "2"
+    },
+    {
+      "name": "Self-Healing",
+      "id": "3"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-28T00:00:00.000Z",
+  "versionId": "1"
+}
