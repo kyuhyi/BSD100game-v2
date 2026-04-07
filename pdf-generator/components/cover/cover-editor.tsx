@@ -7,11 +7,27 @@ import { CoverPreview } from './cover-preview';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { Upload, X, ImageIcon } from 'lucide-react';
 
 export function CoverEditor() {
   const { book, dispatch } = useBook();
   const colorSchemes = Object.entries(DEFAULT_COLOR_SCHEMES);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      dispatch({ type: 'SET_COVER', payload: { customImage: reader.result as string } });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeImage = () => {
+    dispatch({ type: 'SET_COVER', payload: { customImage: undefined } });
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -24,6 +40,38 @@ export function CoverEditor() {
               selected={book.cover.templateId}
               onSelect={(id: CoverTemplateId) => dispatch({ type: 'SET_COVER', payload: { templateId: id } })}
             />
+          </CardContent>
+        </Card>
+
+        {/* Cover Image */}
+        <Card>
+          <CardHeader><CardTitle className="flex items-center gap-2"><ImageIcon className="size-4" /> 표지 이미지</CardTitle></CardHeader>
+          <CardContent>
+            {book.cover.customImage ? (
+              <div className="relative rounded-lg overflow-hidden border">
+                <img src={book.cover.customImage} alt="Cover" className="w-full h-40 object-cover" />
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="secondary" asChild>
+                      <label className="cursor-pointer">
+                        <Upload className="size-3" /> 변경
+                        <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+                      </label>
+                    </Button>
+                    <Button size="sm" variant="destructive" onClick={removeImage}>
+                      <X className="size-3" /> 삭제
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all">
+                <Upload className="size-6 text-muted-foreground mb-2" />
+                <span className="text-sm text-muted-foreground">이미지를 업로드하세요</span>
+                <span className="text-xs text-muted-foreground mt-1">JPG, PNG, WebP 지원</span>
+                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+              </label>
+            )}
           </CardContent>
         </Card>
 
@@ -75,7 +123,7 @@ export function CoverEditor() {
           </CardContent>
         </Card>
 
-        {/* Inputs */}
+        {/* Text Inputs */}
         <Card>
           <CardHeader><CardTitle>텍스트</CardTitle></CardHeader>
           <CardContent className="space-y-4">

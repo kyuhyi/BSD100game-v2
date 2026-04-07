@@ -12,29 +12,29 @@ interface TemplateSelectorProps {
 
 export function TemplateSelector({ selected, onSelect }: TemplateSelectorProps) {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-3 lg:grid-cols-5 gap-3">
       {COVER_TEMPLATES.map((template) => (
         <button
           key={template.id}
           onClick={() => onSelect(template.id)}
           className={cn(
-            'text-left rounded-xl overflow-hidden border-2 transition-all hover:scale-[1.02]',
+            'text-left rounded-xl overflow-hidden border-2 transition-all hover:scale-[1.03]',
             selected === template.id
               ? 'border-primary ring-2 ring-primary/30'
               : 'border-border hover:border-muted-foreground'
           )}
         >
-          <div className="w-full h-48">
+          <div className="w-full">
             <CoverPreview
               title="샘플 제목"
               subtitle="부제목 예시"
               authorName="저자명"
               cover={{ templateId: template.id, colorScheme: DEFAULT_COLOR_SCHEMES.ocean, fontFamily: 'Pretendard' }}
+              compact
             />
           </div>
-          <div className="p-3 bg-card">
-            <div className="text-sm font-medium">{template.nameKo}</div>
-            <div className="text-xs text-muted-foreground">{template.description}</div>
+          <div className="p-2 bg-card">
+            <div className="text-xs font-medium">{template.nameKo}</div>
           </div>
         </button>
       ))}
