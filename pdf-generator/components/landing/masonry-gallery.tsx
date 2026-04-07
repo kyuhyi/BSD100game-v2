@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 const sampleBooks = [
   { id: 1, title: '디지털 마케팅 완벽 가이드', category: '비즈니스', color: 'from-blue-600 to-cyan-500', chapters: 12 },
@@ -15,42 +17,33 @@ const sampleBooks = [
 ];
 
 export function MasonryGallery() {
+  const heights = ['h-64', 'h-80', 'h-72', 'h-96', 'h-64', 'h-80', 'h-72', 'h-96'];
+
   return (
     <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-      {sampleBooks.map((book, i) => {
-        const heights = ['h-64', 'h-80', 'h-72', 'h-96', 'h-64', 'h-80', 'h-72', 'h-96'];
-        return (
-          <motion.div
-            key={book.id}
-            className={`break-inside-avoid ${heights[i % heights.length]} rounded-2xl bg-gradient-to-br ${book.color} p-6 flex flex-col justify-between cursor-pointer group relative overflow-hidden`}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
-            whileHover={{ scale: 1.02 }}
-          >
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
-
-            <div className="relative z-10">
-              <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-xs font-medium mb-3">
-                {book.category}
-              </span>
-              <h3 className="text-xl font-bold text-white leading-snug">{book.title}</h3>
-            </div>
-
-            <div className="relative z-10 flex items-center justify-between">
-              <span className="text-white/70 text-sm">{book.chapters}개 챕터</span>
-              <Link
-                href="/create"
-                className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
-              >
-                이 템플릿으로 시작
-              </Link>
-            </div>
-          </motion.div>
-        );
-      })}
+      {sampleBooks.map((book, i) => (
+        <motion.div
+          key={book.id}
+          className={`break-inside-avoid ${heights[i % heights.length]} rounded-xl bg-gradient-to-br ${book.color} p-6 flex flex-col justify-between cursor-pointer group relative overflow-hidden`}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.08 }}
+          whileHover={{ scale: 1.02 }}
+        >
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
+          <div className="relative z-10">
+            <Badge variant="secondary" className="bg-white/20 text-white border-0 mb-3">{book.category}</Badge>
+            <h3 className="text-xl font-bold text-white leading-snug">{book.title}</h3>
+          </div>
+          <div className="relative z-10 flex items-center justify-between">
+            <span className="text-white/70 text-sm">{book.chapters}개 챕터</span>
+            <Button size="sm" variant="secondary" className="bg-white/20 text-white border-0 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all" asChild>
+              <Link href="/create">이 템플릿으로 시작</Link>
+            </Button>
+          </div>
+        </motion.div>
+      ))}
     </div>
   );
 }
